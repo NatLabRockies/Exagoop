@@ -1,29 +1,34 @@
-1. Copy the ExaGOOP executable to the current folder
+1. Copy the ExaGOOP executable to the current folder.
    ```bash
-   cp $MPM_HOME/Build_Gnumake/ExaGOOP3d.<comp>.<MPI>.ex .
+   cp ../../Build_Gnumake/ExaGOOP3d.gnu.MPI.ex .
    ```
 
-2. Generate the input file and initial material point file
-   ```bash
-   python3 generate_particle_and_inputfiles.py <no of cells> <buffery> <periodic> <number of particle per cell> <scheme order> <alpha_pic_flip> <stress update scheme> <CFL> <Solution Folder Name>
-   ```
-   For example, 
+2. Run the python script generate_particle_and_inputfiles.py using the arguments as given below:
 
    ```bash
-   python3 generate_particle_and_inputfiles.py 25 3 1 1 3 1 1 0.1 25Nx_3Buf_1Per_1PPC_3Order_0Alpha_1StressScheme_0.1CFL   
+   python generate_particle_and_inputfiles.py <no_of_cells_in_x> <buffery> <periodicity> <np_per_cell_x> <order_scheme> <alpha_pic_flip> <stress_update_scheme> <CFL> <Output folder name>   
    ```
-   This should generate an input file (inputs_axialbar.dat) and initial material point file (mpm_particles.dat). 
-
-3. Run ExaaGOOP
-
-   ```bash
-   ExaGOOP3d.<comp>.<MPI>.ex inputs_axialbar.dat  
-   ```
-
-   At the end of the simulation, two output files are written- AxialBarVel.out.0 and AxialBarEnergy.out.0, which are ascii files showing time evolution of total energies and center of mass velocities
    
-4. To plot the energy and center of mass velocity, run the following python scripts:
-  ```bash
-   python plot_energy.py <energy_pic_filename.png>
-   python plot__vel.py <velocity_pic_filename.png>
+   For example, the user can use the following statement,
+   
+   ```bash
+   python generate_particle_and_inputfiles.py 25 3 1 1 1 1 1 0.1 test   
    ```
+   This should generate two files: the input file 'inputs_axialbar.in' and initial material point file 'mpm_particles.dat'
+   
+3. Run the ExaGOOP executable
+
+   ```bash
+   ./ExaGOOP3d.gnu.MPI.ex inputs_axialbar.in
+   ```
+   
+   At the end of the simulation, one should see the output files: 'AxialBarVel.out.0' and 'AxialBarEnergy.out.0'. These are ASCII files providing details of the time evolution of the total energies and center of mass velocity.
+   
+4. To view these outputs, the user can use the python scripts to generate image files.
+   ```bash
+   python plot_energy.py <energy_picture_filename>
+   python plot_vel.py <vel_picture_filename>
+   ```
+   
+5. The user can also view the solution files in './particle_files' and './grid_files'. The restart files are output in './checkpoint_files'
+       

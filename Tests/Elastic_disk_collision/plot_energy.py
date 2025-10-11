@@ -1,6 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
-data=np.loadtxt('Energy.out')
+data=np.loadtxt('ElasticDiskCollisionEnergy.out.0')
 
 
 
@@ -16,5 +16,5 @@ plt.ylabel("Energy (Nm)")
 lgd = ax.legend()  
 # saving the file.Make sure you 
 # use savefig() before show().
-plt.savefig("Energy_vs_time_alpha=0.01.png")
+plt.savefig("Energy_vs_time.png")
 plt.show()

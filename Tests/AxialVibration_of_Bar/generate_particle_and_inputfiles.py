@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 generate_particles.py
-Generate MPM particle file (mpm_particles.dat) and inputs_test for ExaGOOP.
+Generate MPM particle file (mpm_particles.dat) and inputs_axialbar for ExaGOOP.
 
 Positional arguments (original ordering kept):
   1  no_of_cell_in_x         (int >0)
@@ -12,15 +12,11 @@ Positional arguments (original ordering kept):
   5  order_scheme            (int)
   6  alpha_pic_flip          (float)
   7  stress_update_scheme    (int)
-  8  CFL                     (float)
-  9  out_energy_png          (string)
- 10  out_vel_png             (string)
- 11  out_energy_txt          (string)
- 12  out_vel_txt             (string)
- 13  output_tag              (string) used for Solution/<tag> prefixes
+  8  CFL                     (float)  
+ 9  output_tag              (string) used for Solution/<tag> prefixes
 
 Example:
-  python3 generate_particles.py 25 3 1 1 3 1 1 0.1 e.png v.png e.out v.out mytag
+  python3 generate_particles.py 25 3 1 1 3 1 1 0.1 mytag
 """
 from __future__ import annotations
 import argparse
@@ -176,9 +172,9 @@ def write_inputs_file(ncells_x: int,
                       CFL: float,                      
                       output_tag: str,
                       dx1: float,
-                      out_filename: str = "inputs_test") -> None:
+                      out_filename: str = "inputs_axialbar") -> None:
     """
-    Write inputs_test file using provided parameters. Creates Solution/<output_tag> directory if needed.
+    Write inputs_axialbar file using provided parameters. Creates Solution/<output_tag> directory if needed.
     """
     bufferx = 4
     xmin = 0.0
@@ -278,7 +274,7 @@ def write_inputs_file(ncells_x: int,
 
 
 def parse_cli() -> argparse.Namespace:
-    p = argparse.ArgumentParser(description="Generate MPM particle file and inputs_axialbar.dat")
+    p = argparse.ArgumentParser(description="Generate MPM particle file and inputs_axialbar.in")
     p.add_argument("no_of_cell_in_x", type=int)
     p.add_argument("buffery", type=int)
     p.add_argument("periodic", type=int, choices=[0, 1])
