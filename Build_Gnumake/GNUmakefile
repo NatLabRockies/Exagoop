@@ -1,5 +1,5 @@
-AMREX_HOME ?= ../../amrex
 MPM_HOME ?= ../
+AMREX_HOME ?= ${MPM_HOME}/Submodules/amrex
 
 EBASE = ExaGOOP
 
