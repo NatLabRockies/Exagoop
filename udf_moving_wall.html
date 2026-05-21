@@ -1,0 +1,376 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>UDF Moving Wall Boundary Conditions &mdash; ExaGOOP 22.12 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="_static/theme.css?v=df66b05f" />
+      <link rel="stylesheet" type="text/css" href="_static/css/custom.css" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=d09052ea"></script>
+      <script src="_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Numerical Methods" href="theory.html" />
+    <link rel="prev" title="Embedded Boundaries via Level Sets (USE_EB)" href="levelsets.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            ExaGOOP
+              <img src="_static/ExaGOOP_Logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Introduction:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Getting Started:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="tutorial_dambreak.html">Setting up the simulation folder</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial_dambreak.html#setting-up-the-input-file">Setting up the input file</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial_dambreak.html#generating-initial-material-point-file">Generating initial material point file</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial_dambreak.html#running-exagoop-and-viewing-output-files">Running ExaGOOP and viewing output files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial_heat_cylinder.html">Tutorial: 2-D Steady Heat Conduction around a Cylinder (Dirichlet)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User Guide:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="input_reference.html">Input File Reference</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Physics Modules:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="physics_modules.html">Physics Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="temperature_module.html">Temperature Module (<code class="docutils literal notranslate"><span class="pre">USE_TEMP</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="levelsets.html">Embedded Boundaries via Level Sets (<code class="docutils literal notranslate"><span class="pre">USE_EB</span></code>)</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">UDF Moving Wall Boundary Conditions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#udf-interface">UDF interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#building-the-shared-library">Building the shared library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#linking-the-solver-against-libdl">Linking the solver against <code class="docutils literal notranslate"><span class="pre">libdl</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#input-file-parameters">Input file parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#implementation-details">Implementation details</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#supported-face-labels">Supported face labels</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#limitations">Limitations</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Numerical Methods:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="theory.html">Numerical Methods</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Validation and Verification:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="validation.html">Axial vibration of an elastic bar</a></li>
+<li class="toctree-l1"><a class="reference internal" href="validation.html#collision-of-two-dimensional-elastic-disks">Collision of two-dimensional elastic disks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="validation.html#dam-break-simulation">Dam break simulation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="validation.html#torsion-of-a-three-dimensional-elastic-column">Torsion of a three-dimensional elastic column</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Build Reference:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="build_options.html">Build Options Reference</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">References:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="references.html">References</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">ExaGOOP</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">UDF Moving Wall Boundary Conditions</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/udf_moving_wall.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="udf-moving-wall-boundary-conditions">
+<span id="udf-moving-wall"></span><h1>UDF Moving Wall Boundary Conditions<a class="headerlink" href="#udf-moving-wall-boundary-conditions" title="Link to this heading"></a></h1>
+<p>ExaGOOP supports spatially- and temporally-varying velocity boundary
+conditions at any domain face through a <em>user-defined function</em> (UDF)
+supplied as a runtime-loaded shared library.  This mechanism allows
+arbitrary wall motions such as linearly translating walls,  rotating wall etc. to be specified without recompiling the solver.</p>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
+<p>A UDF boundary condition is attached to a single named momentum BC face
+(e.g. <code class="docutils literal notranslate"><span class="pre">mpm.bc_zhi_mom</span></code>) by providing two additional sub-namespace
+parameters in the input file: the path to the shared library and the name
+of the function to call.  At every time step, ExaGOOP calls the UDF on
+the CPU for every node on that face, stores the resulting velocity field
+on a device-resident array, and uses that array when enforcing nodal and
+particle boundary conditions on the GPU.</p>
+</section>
+<section id="udf-interface">
+<h2>UDF interface<a class="headerlink" href="#udf-interface" title="Link to this heading"></a></h2>
+<p>The shared library must export a single C-linkage function with the
+following signature:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">func_name</span><span class="p">(</span><span class="kt">double</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">z</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">t</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">vel</span><span class="p">[</span><span class="mi">3</span><span class="p">]);</span>
+</pre></div>
+</div>
+<p>where:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">x</span></code>, <code class="docutils literal notranslate"><span class="pre">y</span></code>, <code class="docutils literal notranslate"><span class="pre">z</span></code> — physical coordinates of the boundary node (m)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">t</span></code> — current simulation time (s)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">vel[3]</span></code> — output velocity vector <code class="docutils literal notranslate"><span class="pre">{vx,</span> <span class="pre">vy,</span> <span class="pre">vz}</span></code> to be written by
+the function</p></li>
+</ul>
+<p>The function must be declared <code class="docutils literal notranslate"><span class="pre">extern</span> <span class="pre">&quot;C&quot;</span></code> (or compiled as plain C) so
+that the symbol name is not mangled.  A minimal example for a
+solid-body rotation about the <span class="math notranslate nohighlight">\(z\)</span>-axis:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#define OMEGA 0.5</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">wall_vel_twist</span><span class="p">(</span><span class="kt">double</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">z</span><span class="p">,</span>
+<span class="w">                    </span><span class="kt">double</span><span class="w"> </span><span class="n">t</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">vel</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">vel</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">-</span><span class="n">OMEGA</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">y</span><span class="p">;</span>
+<span class="w">    </span><span class="n">vel</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w">  </span><span class="n">OMEGA</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">x</span><span class="p">;</span>
+<span class="w">    </span><span class="n">vel</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w">  </span><span class="mf">0.0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The function is called once per boundary node per time step on a single
+CPU thread; it must be thread-safe and must not call any AMReX or GPU
+routines.</p>
+</section>
+<section id="building-the-shared-library">
+<h2>Building the shared library<a class="headerlink" href="#building-the-shared-library" title="Link to this heading"></a></h2>
+<p>The shared library must be compiled natively on the machine where the
+solver will run.  The required compiler flags differ by platform:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 30.0%" />
+<col style="width: 25.0%" />
+<col style="width: 25.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Platform</p></th>
+<th class="head"><p>Compiler flags</p></th>
+<th class="head"><p>Output extension</p></th>
+<th class="head"><p>Detected by</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>macOS (Darwin)</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">-O2</span> <span class="pre">-fPIC</span> <span class="pre">-dynamiclib</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">.dylib</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">$(shell</span> <span class="pre">uname)</span> <span class="pre">==</span> <span class="pre">Darwin</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Linux</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">-O2</span> <span class="pre">-fPIC</span> <span class="pre">-shared</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">.so</span></code></p></td>
+<td><p>otherwise</p></td>
+</tr>
+</tbody>
+</table>
+<p>A portable <code class="docutils literal notranslate"><span class="pre">Makefile</span></code> that detects the platform automatically:</p>
+<div class="highlight-makefile notranslate"><div class="highlight"><pre><span></span><span class="nv">CC</span><span class="w">  </span><span class="o">=</span><span class="w"> </span>gcc
+<span class="nv">SRC</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>my_wall_vel.c
+
+<span class="nv">UNAME</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="k">$(</span>shell<span class="w"> </span>uname<span class="k">)</span>
+<span class="cp">ifeq ($(UNAME), Darwin)</span>
+<span class="w">  </span><span class="nv">TARGET</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>libmy_wall_vel.dylib
+<span class="w">  </span><span class="nv">CFLAGS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>-O2<span class="w"> </span>-fPIC<span class="w"> </span>-dynamiclib
+<span class="cp">else</span>
+<span class="w">  </span><span class="nv">TARGET</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>libmy_wall_vel.so
+<span class="w">  </span><span class="nv">CFLAGS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>-O2<span class="w"> </span>-fPIC<span class="w"> </span>-shared
+<span class="cp">endif</span>
+
+<span class="nf">$(TARGET)</span><span class="o">:</span><span class="w"> </span><span class="k">$(</span><span class="nv">SRC</span><span class="k">)</span>
+<span class="w">     </span><span class="k">$(</span>CC<span class="k">)</span><span class="w"> </span><span class="k">$(</span>CFLAGS<span class="k">)</span><span class="w"> </span>-o<span class="w"> </span><span class="k">$(</span>TARGET<span class="k">)</span><span class="w"> </span><span class="k">$(</span>SRC<span class="k">)</span><span class="w"> </span>-lm
+
+<span class="nf">clean</span><span class="o">:</span>
+<span class="w">     </span>rm<span class="w"> </span>-f<span class="w"> </span>libmy_wall_vel.so<span class="w"> </span>libmy_wall_vel.dylib
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>A library compiled on Linux (ELF format) cannot be loaded by macOS and
+will cause an <code class="docutils literal notranslate"><span class="pre">Abort</span></code> at startup with the message
+<code class="docutils literal notranslate"><span class="pre">slice</span> <span class="pre">is</span> <span class="pre">not</span> <span class="pre">valid</span> <span class="pre">mach-o</span> <span class="pre">file</span></code>.  Always compile the UDF on the same
+machine (or the same OS) where the simulation will run.</p>
+</div>
+</section>
+<section id="linking-the-solver-against-libdl">
+<h2>Linking the solver against <code class="docutils literal notranslate"><span class="pre">libdl</span></code><a class="headerlink" href="#linking-the-solver-against-libdl" title="Link to this heading"></a></h2>
+<p>The solver must be linked against the dynamic loader library.  Add the
+following line to the test-specific <code class="docutils literal notranslate"><span class="pre">GNUmakefile</span></code> <strong>before</strong> the
+<code class="docutils literal notranslate"><span class="pre">include</span> <span class="pre">Make.rules</span></code> line:</p>
+<div class="highlight-makefile notranslate"><div class="highlight"><pre><span></span><span class="nv">LDFLAGS</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span>-ldl
+</pre></div>
+</div>
+</section>
+<section id="input-file-parameters">
+<h2>Input file parameters<a class="headerlink" href="#input-file-parameters" title="Link to this heading"></a></h2>
+<p>UDF wall velocity is specified per face.  The face namespace follows the
+same pattern as the existing momentum BC keys (<code class="docutils literal notranslate"><span class="pre">mpm.bc_xlo_mom</span></code>,
+<code class="docutils literal notranslate"><span class="pre">mpm.bc_xhi_mom</span></code>, etc.).  Two sub-keys are added under the face
+namespace:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 38.0%" />
+<col style="width: 12.0%" />
+<col style="width: 50.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">mpm.bc_&lt;face&gt;_mom.udf_lib</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">string</span></code></p></td>
+<td><p>Path to the shared library (relative to the run directory or
+absolute).  If omitted, no UDF is loaded for this face.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">mpm.bc_&lt;face&gt;_mom.udf_func</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">string</span></code></p></td>
+<td><p>Name of the exported C function in the library.  Must match
+exactly (case-sensitive); no default.</p></td>
+</tr>
+</tbody>
+</table>
+<p>Both keys must be present together — specifying only one is an error.
+The UDF is only activated for the face where both keys appear; all other
+faces continue to use their static <code class="docutils literal notranslate"><span class="pre">mpm.wall_vel_lo</span></code> /
+<code class="docutils literal notranslate"><span class="pre">mpm.wall_vel_hi</span></code> values.</p>
+<p><strong>Example</strong> — no-slip rotating top wall in the <span class="math notranslate nohighlight">\(z\)</span>-direction:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>mpm.bc_zhi_mom<span class="w">            </span><span class="o">=</span><span class="w"> </span>noslip
+mpm.bc_zhi_mom.udf_lib<span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;./UDF/libwall_twist.dylib&quot;</span>
+mpm.bc_zhi_mom.udf_func<span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;wall_vel_twist&quot;</span>
+</pre></div>
+</div>
+<p>The face BC type (<code class="docutils literal notranslate"><span class="pre">noslip</span></code>, <code class="docutils literal notranslate"><span class="pre">slip</span></code>, <code class="docutils literal notranslate"><span class="pre">partialslip</span></code>) continues to
+control the treatment of the normal and tangential velocity components;
+the UDF replaces the constant wall velocity that would otherwise be read
+from <code class="docutils literal notranslate"><span class="pre">mpm.wall_vel_hi</span></code>.</p>
+</section>
+<section id="implementation-details">
+<h2>Implementation details<a class="headerlink" href="#implementation-details" title="Link to this heading"></a></h2>
+<p>The CPU–GPU split is necessary because UDF function pointers cannot be
+called inside GPU kernels.  ExaGOOP resolves this as follows.</p>
+<p><strong>Per-timestep CPU pre-computation</strong> (<code class="docutils literal notranslate"><span class="pre">compute_udf_wall_vel_at_nodes</span></code>):
+For each face that has a UDF loaded, the function is called once per
+boundary node with the node’s physical coordinates and the current time.
+The results are stored in a host-side <code class="docutils literal notranslate"><span class="pre">amrex::Vector&lt;Real&gt;</span></code> and then
+copied to a <code class="docutils literal notranslate"><span class="pre">Gpu::DeviceVector&lt;Real&gt;</span></code> via
+<code class="docutils literal notranslate"><span class="pre">Gpu::copy(Gpu::hostToDevice,</span> <span class="pre">...)</span></code>.  The device array is indexed as:</p>
+<ul class="simple">
+<li><p>2D: <code class="docutils literal notranslate"><span class="pre">[j</span> <span class="pre">*</span> <span class="pre">SPACEDIM</span> <span class="pre">+</span> <span class="pre">c]</span></code> where <code class="docutils literal notranslate"><span class="pre">j</span></code> is the node index along the
+single perpendicular direction</p></li>
+<li><p>3D: <code class="docutils literal notranslate"><span class="pre">[(j</span> <span class="pre">*</span> <span class="pre">(ncells[p1]+1)</span> <span class="pre">+</span> <span class="pre">k)</span> <span class="pre">*</span> <span class="pre">SPACEDIM</span> <span class="pre">+</span> <span class="pre">c]</span></code> where <code class="docutils literal notranslate"><span class="pre">j</span></code> and
+<code class="docutils literal notranslate"><span class="pre">k</span></code> are node indices in the two perpendicular directions
+(<code class="docutils literal notranslate"><span class="pre">p0</span> <span class="pre">=</span> <span class="pre">(dir==0)</span> <span class="pre">?</span> <span class="pre">1</span> <span class="pre">:</span> <span class="pre">0</span></code>, <code class="docutils literal notranslate"><span class="pre">p1</span> <span class="pre">=</span> <span class="pre">(dir==2)</span> <span class="pre">?</span> <span class="pre">1</span> <span class="pre">:</span> <span class="pre">2</span></code>)</p></li>
+</ul>
+<p><strong>Nodal velocity enforcement</strong> (<code class="docutils literal notranslate"><span class="pre">apply_udf_nodal_bcs</span></code>): A GPU
+<code class="docutils literal notranslate"><span class="pre">ParallelFor</span></code> over the nodal <code class="docutils literal notranslate"><span class="pre">MultiFab</span></code> overwrites the velocity at
+each boundary node using a direct lookup into the device array.  For a
+<code class="docutils literal notranslate"><span class="pre">noslip</span></code> face, all velocity components are set to the UDF value; for a
+<code class="docutils literal notranslate"><span class="pre">slip</span></code> face, only the normal component is set.</p>
+<p><strong>Particle boundary conditions</strong> (<code class="docutils literal notranslate"><span class="pre">moveParticles</span></code>): When a particle
+crosses a UDF face, its wall velocity is computed by bilinear
+interpolation (3D) or linear interpolation (2D) of the pre-computed
+device array at the particle’s transverse position.  This interpolated
+value replaces the constant <code class="docutils literal notranslate"><span class="pre">wall_vel</span></code> used by the non-UDF path and is
+then passed to the standard <code class="docutils literal notranslate"><span class="pre">applybc</span></code> kernel.</p>
+</section>
+<section id="supported-face-labels">
+<h2>Supported face labels<a class="headerlink" href="#supported-face-labels" title="Link to this heading"></a></h2>
+<p>Any of the six domain-face labels may carry a UDF:
+<code class="docutils literal notranslate"><span class="pre">xlo</span></code>, <code class="docutils literal notranslate"><span class="pre">xhi</span></code>, <code class="docutils literal notranslate"><span class="pre">ylo</span></code>, <code class="docutils literal notranslate"><span class="pre">yhi</span></code>, <code class="docutils literal notranslate"><span class="pre">zlo</span></code>, <code class="docutils literal notranslate"><span class="pre">zhi</span></code>.  Multiple faces
+can each have an independent UDF.  The same library file can export
+multiple functions, each assigned to a different face.</p>
+</section>
+<section id="limitations">
+<h2>Limitations<a class="headerlink" href="#limitations" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>The UDF is called on a single CPU thread.  For large 3D grids with many
+boundary nodes the call overhead is proportional to the number of nodes
+on the face; the cost is typically negligible compared to the particle
+and grid operations.</p></li>
+<li><p>The UDF must be <strong>stateless</strong> (no global mutable state) because the
+order in which nodes are visited is not guaranteed between time steps.
+Time dependence must be expressed solely through the <code class="docutils literal notranslate"><span class="pre">t</span></code> argument.</p></li>
+<li><p>Shared libraries must be in a format compatible with the OS on which the
+solver runs (Mach-O <code class="docutils literal notranslate"><span class="pre">.dylib</span></code> on macOS, ELF <code class="docutils literal notranslate"><span class="pre">.so</span></code> on Linux).
+Cross-compiled libraries will fail to load.</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="levelsets.html" class="btn btn-neutral float-left" title="Embedded Boundaries via Level Sets (USE_EB)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="theory.html" class="btn btn-neutral float-right" title="Numerical Methods" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021-2022, ExaGOOPTeam.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

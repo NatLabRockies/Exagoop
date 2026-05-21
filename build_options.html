@@ -1,0 +1,591 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Build Options Reference &mdash; ExaGOOP 22.12 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="_static/theme.css?v=df66b05f" />
+      <link rel="stylesheet" type="text/css" href="_static/css/custom.css" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=d09052ea"></script>
+      <script src="_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="References" href="references.html" />
+    <link rel="prev" title="Axial vibration of an elastic bar" href="validation.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            ExaGOOP
+              <img src="_static/ExaGOOP_Logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Introduction:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Getting Started:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="tutorial_dambreak.html">Setting up the simulation folder</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial_dambreak.html#setting-up-the-input-file">Setting up the input file</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial_dambreak.html#generating-initial-material-point-file">Generating initial material point file</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial_dambreak.html#running-exagoop-and-viewing-output-files">Running ExaGOOP and viewing output files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial_heat_cylinder.html">Tutorial: 2-D Steady Heat Conduction around a Cylinder (Dirichlet)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User Guide:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="input_reference.html">Input File Reference</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Physics Modules:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="physics_modules.html">Physics Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="temperature_module.html">Temperature Module (<code class="docutils literal notranslate"><span class="pre">USE_TEMP</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="levelsets.html">Embedded Boundaries via Level Sets (<code class="docutils literal notranslate"><span class="pre">USE_EB</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="udf_moving_wall.html">UDF Moving Wall Boundary Conditions</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Numerical Methods:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="theory.html">Numerical Methods</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Validation and Verification:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="validation.html">Axial vibration of an elastic bar</a></li>
+<li class="toctree-l1"><a class="reference internal" href="validation.html#collision-of-two-dimensional-elastic-disks">Collision of two-dimensional elastic disks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="validation.html#dam-break-simulation">Dam break simulation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="validation.html#torsion-of-a-three-dimensional-elastic-column">Torsion of a three-dimensional elastic column</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Build Reference:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Build Options Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#use-temp-temperature-module">USE_TEMP — Temperature Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#use-eb-embedded-boundaries">USE_EB — Embedded Boundaries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#amrex-use-hdf5-hdf5-checkpoint-restart">AMREX_USE_HDF5 — HDF5 Checkpoint/Restart</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#precision-floating-point-width">PRECISION — Floating-Point Width</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#dim-spatial-dimensions">DIM — Spatial Dimensions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#profile-full-amrex-profiling">PROFILE — Full AMReX Profiling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#tiny-profile-lightweight-profiling">TINY_PROFILE — Lightweight Profiling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#debug-debug-build">DEBUG — Debug Build</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#fsanitizer-address-and-undefined-behaviour-sanitizers">FSANITIZER — Address and Undefined-Behaviour Sanitizers</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">References:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="references.html">References</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">ExaGOOP</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Build Options Reference</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/build_options.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="build-options-reference">
+<span id="build-options"></span><h1>Build Options Reference<a class="headerlink" href="#build-options-reference" title="Link to this heading"></a></h1>
+<p>ExaGOOP is compiled from source using either CMake or GNUmake.  Most
+compile-time options are set as variables in the relevant build file; the
+table below summarises all user-visible flags.  Detailed descriptions
+follow.</p>
+<table class="docutils align-default" id="id1">
+<caption><span class="caption-number">Table 2 </span><span class="caption-text">Build option summary</span><a class="headerlink" href="#id1" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 22.0%" />
+<col style="width: 22.0%" />
+<col style="width: 12.0%" />
+<col style="width: 12.0%" />
+<col style="width: 12.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Feature</p></th>
+<th class="head"><p>GNUmake variable</p></th>
+<th class="head"><p>CMake variable</p></th>
+<th class="head"><p>GNUmake default</p></th>
+<th class="head"><p>CMake default</p></th>
+<th class="head"><p>Values</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Temperature module</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">USE_TEMP</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">EXAGOOP_USE_TEMP</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">TRUE</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ON</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">TRUE</span></code>/<code class="docutils literal notranslate"><span class="pre">FALSE</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Embedded boundary</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">USE_EB</span></code></p></td>
+<td><p><em>(hardcoded ON)</em></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">FALSE</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ON</span></code> (DIM ≥ 2)</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">TRUE</span></code>/<code class="docutils literal notranslate"><span class="pre">FALSE</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>HDF5 I/O</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">AMREX_USE_HDF5</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">EXAGOOP_USE_HDF5</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">FALSE</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">OFF</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">TRUE</span></code>/<code class="docutils literal notranslate"><span class="pre">FALSE</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Floating-point precision</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">PRECISION</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">EXAGOOP_PRECISION</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">DOUBLE</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">DOUBLE</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">SINGLE</span></code>/<code class="docutils literal notranslate"><span class="pre">DOUBLE</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Spatial dimensions</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">DIM</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">EXAGOOP_DIM</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">2</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">3</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">1</span></code>, <code class="docutils literal notranslate"><span class="pre">2</span></code>, <code class="docutils literal notranslate"><span class="pre">3</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Full profiling</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">PROFILE</span></code></p></td>
+<td><p><em>(not exposed)</em></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">FALSE</span></code></p></td>
+<td><p>—</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">TRUE</span></code>/<code class="docutils literal notranslate"><span class="pre">FALSE</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Lightweight profiling</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">TINY_PROFILE</span></code></p></td>
+<td><p><em>(not exposed)</em></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">FALSE</span></code></p></td>
+<td><p>—</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">TRUE</span></code>/<code class="docutils literal notranslate"><span class="pre">FALSE</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Debug build</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">DEBUG</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">CMAKE_BUILD_TYPE</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">FALSE</span></code></p></td>
+<td><p><em>(unset)</em></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">TRUE</span></code>/<code class="docutils literal notranslate"><span class="pre">FALSE</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Address/UB sanitizers</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">FSANITIZER</span></code></p></td>
+<td><p><em>(not exposed)</em></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">FALSE</span></code></p></td>
+<td><p>—</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">TRUE</span></code>/<code class="docutils literal notranslate"><span class="pre">FALSE</span></code></p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>GNUmake <code class="docutils literal notranslate"><span class="pre">TRUE</span></code>/<code class="docutils literal notranslate"><span class="pre">FALSE</span></code> values are translated to <code class="docutils literal notranslate"><span class="pre">1</span></code>/<code class="docutils literal notranslate"><span class="pre">0</span></code> by
+the line <code class="docutils literal notranslate"><span class="pre">DEFINES</span> <span class="pre">+=</span> <span class="pre">-DTRUE=1</span> <span class="pre">-DFALSE=0</span></code> in
+<code class="docutils literal notranslate"><span class="pre">Build_Gnumake/GNUmakefile</span></code>, so <code class="docutils literal notranslate"><span class="pre">#if</span> <span class="pre">USE_TEMP</span></code> guards work
+correctly for both build paths.</p>
+</div>
+<hr class="docutils" />
+<section id="use-temp-temperature-module">
+<h2>USE_TEMP — Temperature Module<a class="headerlink" href="#use-temp-temperature-module" title="Link to this heading"></a></h2>
+<p>Compiles in the optional coupled heat-transfer solver.  See
+<a class="reference internal" href="temperature_module.html#temperature-module"><span class="std std-ref">Temperature Module (USE_TEMP)</span></a> for the full description of the physics and
+input parameters.</p>
+<p><strong>GNUmake</strong></p>
+<div class="highlight-makefile notranslate"><div class="highlight"><pre><span></span><span class="nv">USE_TEMP</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>TRUE<span class="w">    </span><span class="c1"># enable  (default)</span>
+<span class="nv">USE_TEMP</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>FALSE<span class="w">   </span><span class="c1"># disable</span>
+</pre></div>
+</div>
+<p>Set this in the relevant <code class="docutils literal notranslate"><span class="pre">GNUmakefile</span></code> (<code class="docutils literal notranslate"><span class="pre">Build_Gnumake/GNUmakefile</span></code>
+or a test-specific file) <strong>before</strong> the <code class="docutils literal notranslate"><span class="pre">include</span> <span class="pre">Make.defs</span></code> line.
+The build system injects <code class="docutils literal notranslate"><span class="pre">-DUSE_TEMP=1</span></code> (enabled) or <code class="docutils literal notranslate"><span class="pre">-DUSE_TEMP=0</span></code>
+(disabled) automatically.</p>
+<p><strong>CMake</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cmake<span class="w"> </span>-DEXAGOOP_USE_TEMP<span class="o">=</span>ON<span class="w">  </span>..<span class="w">    </span><span class="c1"># enable  (default)</span>
+cmake<span class="w"> </span>-DEXAGOOP_USE_TEMP<span class="o">=</span>OFF<span class="w"> </span>..<span class="w">    </span><span class="c1"># disable</span>
+</pre></div>
+</div>
+<p><strong>What it enables</strong></p>
+<p>When <code class="docutils literal notranslate"><span class="pre">USE_TEMP=1</span></code>:</p>
+<ul class="simple">
+<li><p>Five additional nodal fields are added to the <code class="docutils literal notranslate"><span class="pre">MultiFab</span></code>
+(<code class="docutils literal notranslate"><span class="pre">NUM_STATES</span></code> grows from 20 to 25).</p></li>
+<li><p>Each particle carries five thermal real-data slots
+(temperature, specific heat, thermal conductivity, heat flux,
+heat source).</p></li>
+<li><p>The thermal solve sequence (P2G deposition, nodal advance,
+G2P interpolation) runs every time step after the momentum update.</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="use-eb-embedded-boundaries">
+<h2>USE_EB — Embedded Boundaries<a class="headerlink" href="#use-eb-embedded-boundaries" title="Link to this heading"></a></h2>
+<p>Enables AMReX Embedded Boundary (EB / cut-cell) support for domains
+with complex geometric boundaries.</p>
+<p><strong>GNUmake</strong></p>
+<div class="highlight-makefile notranslate"><div class="highlight"><pre><span></span><span class="nv">USE_EB</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>FALSE<span class="w">   </span><span class="c1"># disable (default)</span>
+<span class="nv">USE_EB</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>TRUE<span class="w">    </span><span class="c1"># enable</span>
+</pre></div>
+</div>
+<p>When <code class="docutils literal notranslate"><span class="pre">TRUE</span></code>, <code class="docutils literal notranslate"><span class="pre">Build_Gnumake/GNUmakefile</span></code> additionally includes
+<code class="docutils literal notranslate"><span class="pre">$(AMREX_HOME)/Src/EB/Make.package</span></code>.</p>
+<p><strong>CMake</strong></p>
+<p>EB is enabled by default for DIM ≥ 2 builds via a hardcoded <code class="docutils literal notranslate"><span class="pre">set</span></code>
+in <code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code>; there is no command-line <code class="docutils literal notranslate"><span class="pre">-D</span></code> switch to
+disable it without editing the file.  The effective preprocessor
+symbol is set via:</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="c"># Inside CMakeLists.txt — not overridable from the command line</span>
+<span class="nb">set</span><span class="p">(</span><span class="s">EXAGOOP_ENABLE_EB</span><span class="w"> </span><span class="s">ON</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Enforcement rule</strong></p>
+<p>EB is silently forced to <code class="docutils literal notranslate"><span class="pre">FALSE</span></code>/<code class="docutils literal notranslate"><span class="pre">0</span></code> in 1D builds regardless of
+what was requested:</p>
+<div class="highlight-makefile notranslate"><div class="highlight"><pre><span></span><span class="c"># GNUmake — automatic when DIM=1</span>
+<span class="cp">ifeq ($(DIM),1)</span>
+<span class="w">  </span>USE_EB<span class="w"> </span>:<span class="o">=</span><span class="w"> </span>FALSE
+<span class="cp">endif</span>
+</pre></div>
+</div>
+<p>A warning is printed if <code class="docutils literal notranslate"><span class="pre">USE_EB=TRUE</span></code> was explicitly set for a 1D
+build.</p>
+<p><strong>What it enables</strong></p>
+<ul class="simple">
+<li><p>Registers the AMReX EB factory so cut-cell normals, apertures, and
+volume fractions are available on the background grid.</p></li>
+<li><p>Activates the <code class="docutils literal notranslate"><span class="pre">mpm_eb.cpp</span></code> routines for EB-aware boundary
+velocity enforcement.</p></li>
+<li><p>Requires AMReX to be compiled with <code class="docutils literal notranslate"><span class="pre">AMREX_USE_EB</span></code> (handled
+automatically by the build system when <code class="docutils literal notranslate"><span class="pre">USE_EB=TRUE</span></code>).</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="amrex-use-hdf5-hdf5-checkpoint-restart">
+<h2>AMREX_USE_HDF5 — HDF5 Checkpoint/Restart<a class="headerlink" href="#amrex-use-hdf5-hdf5-checkpoint-restart" title="Link to this heading"></a></h2>
+<p>Links against an HDF5 library and enables HDF5-format checkpoint and
+restart files through AMReX’s native HDF5 I/O layer.</p>
+<p><strong>GNUmake</strong></p>
+<p>HDF5 is configured in <code class="docutils literal notranslate"><span class="pre">Build_Gnumake/Make.local</span></code> so that machine- or
+environment-specific library paths stay out of the main makefile.
+A typical <code class="docutils literal notranslate"><span class="pre">Make.local</span></code> block looks like:</p>
+<div class="highlight-makefile notranslate"><div class="highlight"><pre><span></span><span class="c"># --- Make.local (machine-specific) ---</span>
+<span class="nv">HDF5_HOME</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>/path/to/hdf5<span class="w">          </span><span class="c1"># root of HDF5 installation</span>
+<span class="nv">HDF5_INC</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="k">$(</span>HDF5_HOME<span class="k">)</span>/include
+<span class="nv">HDF5_LIB</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="k">$(</span>HDF5_HOME<span class="k">)</span>/lib
+
+<span class="nv">USE_HDF5</span><span class="w">            </span><span class="o">=</span><span class="w"> </span>TRUE<span class="w">         </span><span class="c1"># signal AMReX to enable HDF5</span>
+<span class="nv">AMREX_USE_HDF5</span><span class="w">      </span><span class="o">=</span><span class="w"> </span>TRUE<span class="w">         </span><span class="c1"># define the preprocessor symbol</span>
+<span class="nv">AMREX_USE_HDF5_PARALLEL</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>TRUE<span class="w">     </span><span class="c1"># enable parallel (collective) HDF5</span>
+
+<span class="nv">CXXFLAGS</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span>-I<span class="k">$(</span>HDF5_INC<span class="k">)</span>
+<span class="nv">LDFLAGS</span><span class="w">  </span><span class="o">+=</span><span class="w"> </span>-L<span class="k">$(</span>HDF5_LIB<span class="k">)</span><span class="w"> </span>-lhdf5<span class="w"> </span>-lhdf5_hl
+</pre></div>
+</div>
+<p>On systems using Cray modules (e.g. Kestrel at the National Laboratory of the Rockies), the module
+environment automatically provides the correct paths, so only the
+<code class="docutils literal notranslate"><span class="pre">USE_HDF5</span></code>/<code class="docutils literal notranslate"><span class="pre">AMREX_USE_HDF5</span></code> flags are needed.</p>
+<p>The default in a clean repository is <code class="docutils literal notranslate"><span class="pre">FALSE</span></code> (HDF5 disabled).</p>
+<p><strong>CMake</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cmake<span class="w"> </span>-DEXAGOOP_USE_HDF5<span class="o">=</span>OFF<span class="w"> </span>..<span class="w">           </span><span class="c1"># disable (default)</span>
+cmake<span class="w"> </span>-DEXAGOOP_USE_HDF5<span class="o">=</span>ON<span class="w">  </span>..<span class="w">           </span><span class="c1"># enable serial HDF5</span>
+cmake<span class="w"> </span>-DEXAGOOP_USE_HDF5_PARALLEL<span class="o">=</span>ON<span class="w"> </span>..<span class="w">   </span><span class="c1"># enable parallel HDF5</span>
+</pre></div>
+</div>
+<p>These options are forwarded to AMReX as <code class="docutils literal notranslate"><span class="pre">AMReX_HDF5</span></code> and
+<code class="docutils literal notranslate"><span class="pre">AMReX_HDF5_PARALLEL</span></code>; CMake’s <code class="docutils literal notranslate"><span class="pre">find_package(HDF5)</span></code> locates the
+library automatically if <code class="docutils literal notranslate"><span class="pre">HDF5_ROOT</span></code> or the module environment is
+set.</p>
+<p><strong>What it enables</strong></p>
+<ul class="simple">
+<li><p>AMReX defines the preprocessor symbol <code class="docutils literal notranslate"><span class="pre">AMREX_USE_HDF5</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mpm_init.cpp</span></code> uses <code class="docutils literal notranslate"><span class="pre">#ifdef</span> <span class="pre">AMREX_USE_HDF5</span></code> guards to select
+HDF5 checkpoint reading instead of the native AMReX plot-file
+format.</p></li>
+<li><p>Parallel HDF5 (<code class="docutils literal notranslate"><span class="pre">AMREX_USE_HDF5_PARALLEL</span></code>) allows collective I/O
+across all MPI ranks for large-scale restart files.</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="precision-floating-point-width">
+<h2>PRECISION — Floating-Point Width<a class="headerlink" href="#precision-floating-point-width" title="Link to this heading"></a></h2>
+<p>Selects whether <code class="docutils literal notranslate"><span class="pre">amrex::Real</span></code> resolves to <code class="docutils literal notranslate"><span class="pre">float</span></code> (32-bit) or
+<code class="docutils literal notranslate"><span class="pre">double</span></code> (64-bit) throughout the solver.</p>
+<p><strong>GNUmake</strong></p>
+<div class="highlight-makefile notranslate"><div class="highlight"><pre><span></span><span class="nv">PRECISION</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>DOUBLE<span class="w">   </span><span class="c1"># 64-bit (default)</span>
+<span class="nv">PRECISION</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>SINGLE<span class="w">   </span><span class="c1"># 32-bit</span>
+</pre></div>
+</div>
+<p><strong>CMake</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cmake<span class="w"> </span>-DEXAGOOP_PRECISION<span class="o">=</span>DOUBLE<span class="w"> </span>..<span class="w">   </span><span class="c1"># 64-bit (default)</span>
+cmake<span class="w"> </span>-DEXAGOOP_PRECISION<span class="o">=</span>SINGLE<span class="w"> </span>..<span class="w">   </span><span class="c1"># 32-bit</span>
+</pre></div>
+</div>
+<p><strong>Preprocessor symbols injected</strong></p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 40.0%" />
+<col style="width: 40.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Setting</p></th>
+<th class="head"><p>Symbol defined</p></th>
+<th class="head"><p>String constant</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">DOUBLE</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">AMREX_USE_DOUBLE</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">EXAGOOP_PRECISION_STR=&quot;double&quot;</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">SINGLE</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">AMREX_USE_FLOAT</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">EXAGOOP_PRECISION_STR=&quot;single&quot;</span></code></p></td>
+</tr>
+</tbody>
+</table>
+<p>The string constant is printed in the startup banner.  Any value other
+than <code class="docutils literal notranslate"><span class="pre">SINGLE</span></code> or <code class="docutils literal notranslate"><span class="pre">DOUBLE</span></code> is a fatal CMake error; the GNUmake
+path silently applies no precision flags if the value is unrecognised.</p>
+</section>
+<hr class="docutils" />
+<section id="dim-spatial-dimensions">
+<h2>DIM — Spatial Dimensions<a class="headerlink" href="#dim-spatial-dimensions" title="Link to this heading"></a></h2>
+<p>Selects the number of spatial dimensions compiled into the executable.
+This is a <strong>compile-time constant</strong>; a single binary cannot switch
+between 1D, 2D, and 3D at run time.</p>
+<p><strong>GNUmake</strong></p>
+<div class="highlight-makefile notranslate"><div class="highlight"><pre><span></span><span class="nv">DIM</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">2</span><span class="w">   </span><span class="c1"># 2-D build (default in Build_Gnumake/GNUmakefile)</span>
+<span class="nv">DIM</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">3</span><span class="w">   </span><span class="c1"># 3-D build</span>
+<span class="nv">DIM</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="w">   </span><span class="c1"># 1-D build</span>
+</pre></div>
+</div>
+<p>Test-specific makefiles (e.g. <code class="docutils literal notranslate"><span class="pre">Tests/1D_Heat_Conduction/GNUmakefile</span></code>)
+override this to match the problem dimension.</p>
+<p><strong>CMake</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cmake<span class="w"> </span>-DEXAGOOP_DIM<span class="o">=</span><span class="m">3</span><span class="w"> </span>..<span class="w">   </span><span class="c1"># 3-D (default)</span>
+cmake<span class="w"> </span>-DEXAGOOP_DIM<span class="o">=</span><span class="m">2</span><span class="w"> </span>..<span class="w">   </span><span class="c1"># 2-D</span>
+cmake<span class="w"> </span>-DEXAGOOP_DIM<span class="o">=</span><span class="m">1</span><span class="w"> </span>..<span class="w">   </span><span class="c1"># 1-D</span>
+</pre></div>
+</div>
+<p><strong>What it controls</strong></p>
+<ul class="simple">
+<li><p>AMReX defines <code class="docutils literal notranslate"><span class="pre">AMREX_SPACEDIM</span></code> to the chosen value; all
+dimensional arrays (<code class="docutils literal notranslate"><span class="pre">GpuArray</span></code>, loop bounds, <code class="docutils literal notranslate"><span class="pre">IntVect</span></code>) are
+sized at compile time.</p></li>
+<li><p>The executable name includes the dimension suffix, e.g.
+<code class="docutils literal notranslate"><span class="pre">ExaGOOP2d.gnu.MPI.ex</span></code> or <code class="docutils literal notranslate"><span class="pre">ExaGOOP3d.gnu.MPI.ex</span></code>.</p></li>
+<li><p>Setting <code class="docutils literal notranslate"><span class="pre">DIM=1</span></code> forces <code class="docutils literal notranslate"><span class="pre">USE_EB=FALSE</span></code> (AMReX EB is not
+supported in 1D).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mpm.ppc</span></code>, <code class="docutils literal notranslate"><span class="pre">mpm.prob_lo</span></code>, and all other spatially-indexed
+parameters expect exactly <code class="docutils literal notranslate"><span class="pre">SPACEDIM</span></code> entries in the input file.
+Per-face momentum BC keys (<code class="docutils literal notranslate"><span class="pre">mpm.bc_xlo_mom</span></code>, <code class="docutils literal notranslate"><span class="pre">mpm.bc_ylo_mom</span></code>,
+etc.) exist for each of the <code class="docutils literal notranslate"><span class="pre">2</span> <span class="pre">*</span> <span class="pre">SPACEDIM</span></code> domain faces.</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="profile-full-amrex-profiling">
+<h2>PROFILE — Full AMReX Profiling<a class="headerlink" href="#profile-full-amrex-profiling" title="Link to this heading"></a></h2>
+<p>Enables AMReX’s detailed timer-based profiler, which wraps every
+<code class="docutils literal notranslate"><span class="pre">BL_PROFILE</span></code> region and produces a <code class="docutils literal notranslate"><span class="pre">bl_prof/</span></code> output directory
+containing call-graph timing data.</p>
+<p><strong>GNUmake</strong></p>
+<div class="highlight-makefile notranslate"><div class="highlight"><pre><span></span><span class="nv">PROFILE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>FALSE<span class="w">   </span><span class="c1"># disable (default)</span>
+<span class="nv">PROFILE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>TRUE<span class="w">    </span><span class="c1"># enable</span>
+</pre></div>
+</div>
+<p>Related flags (all default <code class="docutils literal notranslate"><span class="pre">FALSE</span></code>):</p>
+<div class="highlight-makefile notranslate"><div class="highlight"><pre><span></span><span class="nv">COMM_PROFILE</span><span class="w">  </span><span class="o">=</span><span class="w"> </span>TRUE<span class="w">   </span><span class="c1"># also profile MPI communication</span>
+<span class="nv">TRACE_PROFILE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>TRUE<span class="w">   </span><span class="c1"># record full call traces</span>
+<span class="nv">MEM_PROFILE</span><span class="w">   </span><span class="o">=</span><span class="w"> </span>TRUE<span class="w">   </span><span class="c1"># track memory usage</span>
+</pre></div>
+</div>
+<p><strong>CMake</strong></p>
+<p>Full profiling is an AMReX-layer flag and is <strong>not</strong> exposed as an
+<code class="docutils literal notranslate"><span class="pre">-DEXAGOOP_…</span></code> option in <code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code>.  Pass it directly to
+the AMReX sub-build or enable it inside <code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code> before the
+<code class="docutils literal notranslate"><span class="pre">add_subdirectory(amrex)</span></code> call.</p>
+<p><strong>What it enables</strong></p>
+<ul class="simple">
+<li><p>AMReX defines <code class="docutils literal notranslate"><span class="pre">AMREX_PROFILING</span></code> (and optionally
+<code class="docutils literal notranslate"><span class="pre">AMREX_COMM_PROFILING</span></code>, <code class="docutils literal notranslate"><span class="pre">AMREX_TRACE_PROFILING</span></code>).</p></li>
+<li><p>A <code class="docutils literal notranslate"><span class="pre">.PROF</span></code> suffix is appended to the GNUmake executable name.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">PROFILE=TRUE</span></code> and <code class="docutils literal notranslate"><span class="pre">TINY_PROFILE=TRUE</span></code> are <strong>mutually
+exclusive</strong>; AMReX will error if both are set.</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="tiny-profile-lightweight-profiling">
+<h2>TINY_PROFILE — Lightweight Profiling<a class="headerlink" href="#tiny-profile-lightweight-profiling" title="Link to this heading"></a></h2>
+<p>Enables AMReX’s low-overhead profiler, which accumulates per-region
+wall-clock totals and prints a summary table at the end of the run.
+Use this as a first-pass performance diagnostic when full <code class="docutils literal notranslate"><span class="pre">PROFILE</span></code>
+overhead is undesirable.</p>
+<p><strong>GNUmake</strong></p>
+<div class="highlight-makefile notranslate"><div class="highlight"><pre><span></span><span class="nv">TINY_PROFILE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>FALSE<span class="w">   </span><span class="c1"># disable (default)</span>
+<span class="nv">TINY_PROFILE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>TRUE<span class="w">    </span><span class="c1"># enable (only when PROFILE = FALSE)</span>
+</pre></div>
+</div>
+<p><strong>CMake</strong></p>
+<p>Not exposed as an ExaGOOP CMake option; configure at the AMReX level
+if needed.</p>
+<p><strong>What it enables</strong></p>
+<ul class="simple">
+<li><p>AMReX defines <code class="docutils literal notranslate"><span class="pre">AMREX_TINY_PROFILING</span></code>.</p></li>
+<li><p>A <code class="docutils literal notranslate"><span class="pre">.TPROF</span></code> suffix is appended to the GNUmake executable name.</p></li>
+<li><p>Mutually exclusive with <code class="docutils literal notranslate"><span class="pre">PROFILE=TRUE</span></code>.</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="debug-debug-build">
+<h2>DEBUG — Debug Build<a class="headerlink" href="#debug-debug-build" title="Link to this heading"></a></h2>
+<p>Switches from an optimised release build to a debug build: disables
+most optimisations, enables full debug symbols, activates AMReX
+runtime assertions, and adds array-bounds checking.</p>
+<p><strong>GNUmake</strong></p>
+<div class="highlight-makefile notranslate"><div class="highlight"><pre><span></span><span class="nv">DEBUG</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>FALSE<span class="w">   </span><span class="c1"># optimised release (default)</span>
+<span class="nv">DEBUG</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>TRUE<span class="w">    </span><span class="c1"># debug</span>
+</pre></div>
+</div>
+<p>When <code class="docutils literal notranslate"><span class="pre">TRUE</span></code>, AMReX’s <code class="docutils literal notranslate"><span class="pre">gnu.mak</span></code> (or equivalent compiler file)
+substitutes <code class="docutils literal notranslate"><span class="pre">-g</span> <span class="pre">-O0</span> <span class="pre">-ggdb</span> <span class="pre">-ftrapv</span></code> for the release flags
+<code class="docutils literal notranslate"><span class="pre">-g1</span> <span class="pre">-O3</span></code>, and defines <code class="docutils literal notranslate"><span class="pre">AMREX_DEBUG</span></code>.</p>
+<p><strong>CMake</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cmake<span class="w"> </span>-DCMAKE_BUILD_TYPE<span class="o">=</span>Release<span class="w"> </span>..<span class="w">   </span><span class="c1"># optimised (recommended default)</span>
+cmake<span class="w"> </span>-DCMAKE_BUILD_TYPE<span class="o">=</span>Debug<span class="w">   </span>..<span class="w">   </span><span class="c1"># debug</span>
+</pre></div>
+</div>
+<p>The CMake path defines <code class="docutils literal notranslate"><span class="pre">EXAGOOP_BUILD_TYPE=&quot;Debug&quot;</span></code> or
+<code class="docutils literal notranslate"><span class="pre">&quot;Release&quot;</span></code> in the startup banner via <code class="docutils literal notranslate"><span class="pre">add_compile_definitions</span></code>.
+Standard <code class="docutils literal notranslate"><span class="pre">-DNDEBUG</span></code> suppression applies for Release builds.</p>
+<p><strong>What it enables</strong></p>
+<ul class="simple">
+<li><p>AMReX array-bounds and precondition assertions are active.</p></li>
+<li><p>A <code class="docutils literal notranslate"><span class="pre">.DEBUG</span></code> suffix is appended to the GNUmake executable name.</p></li>
+<li><p>Incompatible with GPU profiling runs due to severe performance
+degradation.</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="fsanitizer-address-and-undefined-behaviour-sanitizers">
+<h2>FSANITIZER — Address and Undefined-Behaviour Sanitizers<a class="headerlink" href="#fsanitizer-address-and-undefined-behaviour-sanitizers" title="Link to this heading"></a></h2>
+<p>Instruments the binary with LLVM/GCC runtime sanitizers to detect
+memory errors, undefined behaviour, and pointer misuse at run time.</p>
+<p><strong>GNUmake</strong></p>
+<div class="highlight-makefile notranslate"><div class="highlight"><pre><span></span><span class="nv">FSANITIZER</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>FALSE<span class="w">   </span><span class="c1"># disable (default)</span>
+<span class="nv">FSANITIZER</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>TRUE<span class="w">    </span><span class="c1"># enable AddressSanitizer + UBSan</span>
+</pre></div>
+</div>
+<p>A related flag enables thread-safety checking independently:</p>
+<div class="highlight-makefile notranslate"><div class="highlight"><pre><span></span><span class="nv">THREAD_SANITIZER</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>FALSE<span class="w">   </span><span class="c1"># disable (default)</span>
+<span class="nv">THREAD_SANITIZER</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>TRUE<span class="w">    </span><span class="c1"># enable ThreadSanitizer</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">FSANITIZER</span></code> and <code class="docutils literal notranslate"><span class="pre">THREAD_SANITIZER</span></code> should not be set <code class="docutils literal notranslate"><span class="pre">TRUE</span></code>
+simultaneously — the two sanitizer runtimes conflict.</p>
+<p><strong>CMake</strong></p>
+<p>Not exposed as an ExaGOOP CMake option.  Pass the sanitizer flags
+manually via <code class="docutils literal notranslate"><span class="pre">CMAKE_CXX_FLAGS</span></code> if needed:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cmake<span class="w"> </span>-DCMAKE_CXX_FLAGS<span class="o">=</span><span class="s2">&quot;-fsanitize=address,undefined&quot;</span><span class="w"> </span>..
+</pre></div>
+</div>
+<p><strong>Compiler flags injected (via AMReX’s</strong> <code class="docutils literal notranslate"><span class="pre">gnu.mak</span></code> <strong>)</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>-fsanitize=address
+-fsanitize=undefined
+-fsanitize=pointer-compare
+-fsanitize=pointer-subtract
+-fsanitize=builtin
+-fsanitize=pointer-overflow
+</pre></div>
+</div>
+<p><strong>What it enables</strong></p>
+<ul class="simple">
+<li><p>AddressSanitizer catches heap/stack buffer overflows, use-after-free,
+and use-after-return.</p></li>
+<li><p>UndefinedBehaviorSanitizer detects signed-integer overflow, null
+pointer dereferences, misaligned accesses, and invalid enum values.</p></li>
+<li><p>Pointer sanitizers flag illegal pointer arithmetic.</p></li>
+<li><p>Requires a runtime library (<code class="docutils literal notranslate"><span class="pre">libasan</span></code>, <code class="docutils literal notranslate"><span class="pre">libubsan</span></code>); the
+executable is significantly slower and uses more memory than a
+release build.</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Sanitizers are incompatible with GPU backends (<code class="docutils literal notranslate"><span class="pre">USE_CUDA</span></code>,
+<code class="docutils literal notranslate"><span class="pre">USE_HIP</span></code>).  Use them on CPU-only debug builds only.</p>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="validation.html" class="btn btn-neutral float-left" title="Axial vibration of an elastic bar" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="references.html" class="btn btn-neutral float-right" title="References" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021-2022, ExaGOOPTeam.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

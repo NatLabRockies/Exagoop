@@ -1,0 +1,253 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Physics Modules &mdash; ExaGOOP 22.12 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="_static/theme.css?v=df66b05f" />
+      <link rel="stylesheet" type="text/css" href="_static/css/custom.css" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=d09052ea"></script>
+      <script src="_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Temperature Module (USE_TEMP)" href="temperature_module.html" />
+    <link rel="prev" title="Input File Reference" href="input_reference.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            ExaGOOP
+              <img src="_static/ExaGOOP_Logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Introduction:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Getting Started:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="tutorial_dambreak.html">Setting up the simulation folder</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial_dambreak.html#setting-up-the-input-file">Setting up the input file</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial_dambreak.html#generating-initial-material-point-file">Generating initial material point file</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial_dambreak.html#running-exagoop-and-viewing-output-files">Running ExaGOOP and viewing output files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial_heat_cylinder.html">Tutorial: 2-D Steady Heat Conduction around a Cylinder (Dirichlet)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User Guide:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="input_reference.html">Input File Reference</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Physics Modules:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Physics Modules</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#temperature-module">Temperature Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#embedded-boundaries-level-sets">Embedded Boundaries / Level Sets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#udf-moving-wall-boundary-conditions">UDF Moving Wall Boundary Conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#combining-modules">Combining Modules</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="temperature_module.html">Temperature Module (<code class="docutils literal notranslate"><span class="pre">USE_TEMP</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="levelsets.html">Embedded Boundaries via Level Sets (<code class="docutils literal notranslate"><span class="pre">USE_EB</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="udf_moving_wall.html">UDF Moving Wall Boundary Conditions</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Numerical Methods:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="theory.html">Numerical Methods</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Validation and Verification:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="validation.html">Axial vibration of an elastic bar</a></li>
+<li class="toctree-l1"><a class="reference internal" href="validation.html#collision-of-two-dimensional-elastic-disks">Collision of two-dimensional elastic disks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="validation.html#dam-break-simulation">Dam break simulation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="validation.html#torsion-of-a-three-dimensional-elastic-column">Torsion of a three-dimensional elastic column</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Build Reference:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="build_options.html">Build Options Reference</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">References:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="references.html">References</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">ExaGOOP</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Physics Modules</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/physics_modules.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="physics-modules">
+<span id="id1"></span><h1>Physics Modules<a class="headerlink" href="#physics-modules" title="Link to this heading"></a></h1>
+<p>ExaGOOP’s core solver handles momentum and mass conservation for isothermal,
+single-phase problems. Additional physics are compiled in through optional
+modules, each controlled by a build-time flag. This page gives an overview of
+the three available modules and guidance on when to use them. Full details —
+including input file parameters, boundary condition syntax, and worked examples
+— are in the individual module pages linked below.</p>
+<table class="docutils align-default" id="id2">
+<caption><span class="caption-number">Table 1 </span><span class="caption-text">Module summary</span><a class="headerlink" href="#id2" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 30.0%" />
+<col style="width: 20.0%" />
+<col style="width: 20.0%" />
+<col style="width: 30.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Module</p></th>
+<th class="head"><p>CMake flag</p></th>
+<th class="head"><p>GNUmake flag</p></th>
+<th class="head"><p>Purpose</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><a class="reference internal" href="temperature_module.html#temperature-module"><span class="std std-ref">Temperature Module (USE_TEMP)</span></a></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">EXAGOOP_USE_TEMP=ON</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">USE_TEMP=TRUE</span></code></p></td>
+<td><p>Coupled heat transfer and thermal BCs</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="levelsets.html#levelsets"><span class="std std-ref">Embedded Boundaries via Level Sets (USE_EB)</span></a></p></td>
+<td><p><em>(always ON for DIM ≥ 2)</em></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">USE_EB=TRUE</span></code></p></td>
+<td><p>Solid obstacles via signed-distance level sets</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="udf_moving_wall.html#udf-moving-wall"><span class="std std-ref">UDF Moving Wall Boundary Conditions</span></a></p></td>
+<td><p><em>(runtime, no extra flag)</em></p></td>
+<td><p><em>(runtime, no extra flag)</em></p></td>
+<td><p>Spatially and temporally varying velocity BCs</p></td>
+</tr>
+</tbody>
+</table>
+<section id="temperature-module">
+<h2>Temperature Module<a class="headerlink" href="#temperature-module" title="Link to this heading"></a></h2>
+<p>The temperature module adds a Lagrangian energy equation solved alongside the
+momentum equation. When enabled, each material point carries thermal state
+(temperature, specific heat, thermal conductivity, heat flux, and internal heat
+source), and the background grid carries five additional nodal fields that are
+deposited and interpolated every time step.</p>
+<p><strong>When to use it.</strong> Enable this module for any problem where thermal effects
+are significant: conjugate heat transfer, thermally driven flows, or
+constitutive models whose parameters depend on temperature.</p>
+<p><strong>Build flag.</strong> <code class="docutils literal notranslate"><span class="pre">EXAGOOP_USE_TEMP=ON</span></code> (CMake) or <code class="docutils literal notranslate"><span class="pre">USE_TEMP=TRUE</span></code> (GNUmake).
+The module is compiled <em>out</em> by default; simulations that do not need it incur
+no runtime overhead.</p>
+<p><a class="reference internal" href="temperature_module.html"><span class="doc">Full temperature module documentation</span></a></p>
+</section>
+<section id="embedded-boundaries-level-sets">
+<h2>Embedded Boundaries / Level Sets<a class="headerlink" href="#embedded-boundaries-level-sets" title="Link to this heading"></a></h2>
+<p>The embedded boundary (EB) module allows solid obstacles to be placed inside
+the computational domain using signed-distance level sets built on the AMReX
+EB2 library. Particles that fall inside a body are removed at initialisation;
+during time advancement the level-set field enforces momentum and thermal
+boundary conditions on grid nodes near each body surface, and reflects or
+absorbs particles that attempt to cross it. Multiple bodies can be active
+simultaneously.</p>
+<p><strong>When to use it.</strong> Enable for any problem with a non-trivial internal
+geometry — cylinders, spheres, arbitrary bodies — that cannot be handled by
+simple domain-face boundary conditions alone.</p>
+<p><strong>Build flag.</strong> <code class="docutils literal notranslate"><span class="pre">USE_EB=TRUE</span></code> (GNUmake); EB is always compiled in by the
+CMake build for <code class="docutils literal notranslate"><span class="pre">DIM</span> <span class="pre">≥</span> <span class="pre">2</span></code>. EB is not available in 1-D builds.</p>
+<p><a class="reference internal" href="levelsets.html"><span class="doc">Full embedded boundary documentation</span></a></p>
+</section>
+<section id="udf-moving-wall-boundary-conditions">
+<h2>UDF Moving Wall Boundary Conditions<a class="headerlink" href="#udf-moving-wall-boundary-conditions" title="Link to this heading"></a></h2>
+<p>The UDF (user-defined function) interface allows arbitrary velocity boundary
+conditions to be specified at any domain face at runtime, without recompiling
+the solver. The user compiles a small shared library exporting a single
+C-linkage function; ExaGOOP loads it at start-up and calls it every time step
+to obtain the velocity at each boundary node.</p>
+<p><strong>When to use it.</strong> Use this for wall motions that cannot be expressed as a
+simple constant: rotating walls, oscillating pistons, prescribed shear profiles,
+or any spatially and temporally varying velocity field.</p>
+<p><strong>Build flag.</strong> No additional compile-time flag is required. The UDF is
+activated at runtime through two extra parameters in the input file pointing
+to the shared library path and function name.</p>
+<p><a class="reference internal" href="udf_moving_wall.html"><span class="doc">Full UDF moving wall documentation</span></a></p>
+</section>
+<section id="combining-modules">
+<h2>Combining Modules<a class="headerlink" href="#combining-modules" title="Link to this heading"></a></h2>
+<p>The modules are independent and can be combined freely. For example, a
+simulation of heat transfer around a moving cylinder would require both
+<code class="docutils literal notranslate"><span class="pre">USE_TEMP</span></code> (for the energy equation) and <code class="docutils literal notranslate"><span class="pre">USE_EB</span></code> (for the cylinder
+geometry). The tutorials section includes examples that exercise these
+combinations.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="input_reference.html" class="btn btn-neutral float-left" title="Input File Reference" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="temperature_module.html" class="btn btn-neutral float-right" title="Temperature Module (USE_TEMP)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021-2022, ExaGOOPTeam.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

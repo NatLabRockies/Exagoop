@@ -1,0 +1,376 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Getting Started &mdash; ExaGOOP 22.12 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="_static/theme.css?v=df66b05f" />
+      <link rel="stylesheet" type="text/css" href="_static/css/custom.css" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=d09052ea"></script>
+      <script src="_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Setting up the simulation folder" href="tutorial_dambreak.html" />
+    <link rel="prev" title="Introduction" href="intro.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            ExaGOOP
+              <img src="_static/ExaGOOP_Logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Introduction:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Getting Started:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Getting Started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#system-requirements">System Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#obtaining-the-source">Obtaining the Source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#building-with-cmake">Building with CMake</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#building-with-gnumake">Building with GNUmake</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#verifying-the-build">Verifying the Build</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#visualizing-output">Visualizing Output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#getting-help">Getting Help</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="tutorial_dambreak.html">Setting up the simulation folder</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial_dambreak.html#setting-up-the-input-file">Setting up the input file</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial_dambreak.html#generating-initial-material-point-file">Generating initial material point file</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial_dambreak.html#running-exagoop-and-viewing-output-files">Running ExaGOOP and viewing output files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial_heat_cylinder.html">Tutorial: 2-D Steady Heat Conduction around a Cylinder (Dirichlet)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User Guide:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="input_reference.html">Input File Reference</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Physics Modules:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="physics_modules.html">Physics Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="temperature_module.html">Temperature Module (<code class="docutils literal notranslate"><span class="pre">USE_TEMP</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="levelsets.html">Embedded Boundaries via Level Sets (<code class="docutils literal notranslate"><span class="pre">USE_EB</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="udf_moving_wall.html">UDF Moving Wall Boundary Conditions</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Numerical Methods:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="theory.html">Numerical Methods</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Validation and Verification:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="validation.html">Axial vibration of an elastic bar</a></li>
+<li class="toctree-l1"><a class="reference internal" href="validation.html#collision-of-two-dimensional-elastic-disks">Collision of two-dimensional elastic disks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="validation.html#dam-break-simulation">Dam break simulation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="validation.html#torsion-of-a-three-dimensional-elastic-column">Torsion of a three-dimensional elastic column</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Build Reference:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="build_options.html">Build Options Reference</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">References:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="references.html">References</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">ExaGOOP</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Getting Started</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/getting_started.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="getting-started">
+<span id="id1"></span><h1>Getting Started<a class="headerlink" href="#getting-started" title="Link to this heading"></a></h1>
+<p>This page covers everything needed to go from a fresh checkout to a running
+ExaGOOP simulation: system requirements, obtaining the source, building with
+CMake or GNUmake, and verifying the installation.</p>
+<section id="system-requirements">
+<h2>System Requirements<a class="headerlink" href="#system-requirements" title="Link to this heading"></a></h2>
+<p>ExaGOOP runs on macOS and Linux. Windows is not officially supported; Windows
+users should use the Windows Subsystem for Linux (WSL).</p>
+<p><strong>Compiler.</strong> A C++17-capable compiler is required:</p>
+<ul class="simple">
+<li><p>GCC 8 or newer</p></li>
+<li><p>Clang 3.6 or newer</p></li>
+</ul>
+<p>Microsoft Visual C++ (MSVC) is not offcially supported. However, the developers are not aware of any potential issues preventing Windows 11
+builds on non-GPU architectures.</p>
+<p><strong>Build system.</strong> Either of:</p>
+<ul class="simple">
+<li><p>CMake 3.20 or newer (recommended)</p></li>
+<li><p>GNU Make 3.81 or newer</p></li>
+</ul>
+<p><strong>MPI.</strong> An MPI-2 implementation (e.g. OpenMPI, MPICH) is required for
+multi-process runs. Single-process CPU builds can be compiled without MPI by
+setting <code class="docutils literal notranslate"><span class="pre">EXAGOOP_ENABLE_MPI=OFF</span></code> (CMake) or <code class="docutils literal notranslate"><span class="pre">USE_MPI=FALSE</span></code> (GNUmake).</p>
+<p><strong>GPU (optional).</strong></p>
+<ul class="simple">
+<li><p>NVIDIA GPUs: CUDA 11 or newer</p></li>
+<li><p>AMD GPUs: ROCm 5.2 or newer</p></li>
+</ul>
+<p>The AMReX framework (bundled as a submodule) handles the low-level GPU
+portability layer.</p>
+</section>
+<section id="obtaining-the-source">
+<h2>Obtaining the Source<a class="headerlink" href="#obtaining-the-source" title="Link to this heading"></a></h2>
+<p>Clone the repository with its AMReX submodule in a single step:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>--recurse-submodules<span class="w"> </span>https://github.com/NatLabRockies/Exagoop.git
+</pre></div>
+</div>
+<p>This creates an <code class="docutils literal notranslate"><span class="pre">Exagoop/</span></code> directory. The AMReX sources reside under
+<code class="docutils literal notranslate"><span class="pre">Exagoop/Submodules/amrex</span></code>.</p>
+<p>Next, set the two environment variables that the build system and test scripts
+rely on. Add these to your <code class="docutils literal notranslate"><span class="pre">~/.bashrc</span></code> or <code class="docutils literal notranslate"><span class="pre">~/.zshrc</span></code> to make them
+persistent:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span><span class="w"> </span><span class="nv">MPM_HOME</span><span class="o">=</span>/path/to/Exagoop
+<span class="nb">export</span><span class="w"> </span><span class="nv">AMREX_HOME</span><span class="o">=</span><span class="si">${</span><span class="nv">MPM_HOME</span><span class="si">}</span>/Submodules/amrex
+</pre></div>
+</div>
+</section>
+<section id="building-with-cmake">
+<h2>Building with CMake<a class="headerlink" href="#building-with-cmake" title="Link to this heading"></a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">Build_Cmake/cmake.sh</span></code> script
+contains a template <code class="docutils literal notranslate"><span class="pre">cmake</span></code> invocation; edit it to match your environment
+before running it.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span><span class="nv">$MPM_HOME</span>/Build_Cmake
+<span class="c1"># Edit cmake.sh as described below, then:</span>
+sh<span class="w"> </span>cmake.sh
+</pre></div>
+</div>
+<p>Key options in <code class="docutils literal notranslate"><span class="pre">cmake.sh</span></code>:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 35.0%" />
+<col style="width: 15.0%" />
+<col style="width: 50.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Option</p></th>
+<th class="head"><p>Default</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">-DEXAGOOP_ENABLE_MPI</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">OFF</span></code></p></td>
+<td><p>Enable MPI parallelism</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">-DEXAGOOP_ENABLE_CUDA</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">OFF</span></code></p></td>
+<td><p>Enable NVIDIA GPU support (requires CUDA ≥ 11)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">-DEXAGOOP_ENABLE_HIP</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">OFF</span></code></p></td>
+<td><p>Enable AMD GPU support (requires ROCm ≥ 5.2)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">-DAMReX_CUDA_ARCH</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Auto</span></code></p></td>
+<td><p>CUDA compute capability, e.g. <code class="docutils literal notranslate"><span class="pre">80</span></code> for A100</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">-DAMReX_AMD_ARCH</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">gfx90a</span></code></p></td>
+<td><p>ROCm target architecture</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">-DEXAGOOP_USE_TEMP</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">OFF</span></code></p></td>
+<td><p>Compile in the heat-transfer module</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">-DEXAGOOP_PRECISION</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">DOUBLE</span></code></p></td>
+<td><p>Floating-point precision: <code class="docutils literal notranslate"><span class="pre">SINGLE</span></code> or <code class="docutils literal notranslate"><span class="pre">DOUBLE</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">-DEXAGOOP_USE_HDF5</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">OFF</span></code></p></td>
+<td><p>Enable HDF5 output</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">EXAGOOP_DIM</span></code> is fixed at <code class="docutils literal notranslate"><span class="pre">2</span></code> in the CMake build. Users should set these variables corresponding to the dimensionality</dt><dd><p>of the problem they intend to solve.</p>
+</dd>
+</dl>
+<p>On a successful build the executable <code class="docutils literal notranslate"><span class="pre">ExaGOOP&lt;dim&gt;d.*.exe</span></code> is placed in
+<code class="docutils literal notranslate"><span class="pre">$MPM_HOME/Build_Cmake</span></code>. The executable name is determined by the dimensionality used as well other build variables.</p>
+</section>
+<section id="building-with-gnumake">
+<h2>Building with GNUmake<a class="headerlink" href="#building-with-gnumake" title="Link to this heading"></a></h2>
+<p>Open <code class="docutils literal notranslate"><span class="pre">$MPM_HOME/Build_Gnumake/GNUmakefile</span></code> and set the options near the
+top of the file:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 20.0%" />
+<col style="width: 55.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Variable</p></th>
+<th class="head"><p>Default</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">DIM</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">1</span></code></p></td>
+<td><p>Spatial dimension: <code class="docutils literal notranslate"><span class="pre">1</span></code>, <code class="docutils literal notranslate"><span class="pre">2</span></code>, or <code class="docutils literal notranslate"><span class="pre">3</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">COMP</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">gnu</span></code></p></td>
+<td><p>Compiler: <code class="docutils literal notranslate"><span class="pre">gnu</span></code> or <code class="docutils literal notranslate"><span class="pre">clang</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">USE_MPI</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">TRUE</span></code></p></td>
+<td><p>Enable MPI</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">USE_OMP</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">FALSE</span></code></p></td>
+<td><p>Enable OpenMP threading</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">USE_CUDA</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">FALSE</span></code></p></td>
+<td><p>Enable NVIDIA GPU (CUDA)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">USE_HIP</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">FALSE</span></code></p></td>
+<td><p>Enable AMD GPU (ROCm/HIP)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">USE_TEMP</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">FALSE</span></code></p></td>
+<td><p>Compile in the heat-transfer module</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">USE_EB</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">FALSE</span></code></p></td>
+<td><p>Compile in embedded boundary support (requires <code class="docutils literal notranslate"><span class="pre">DIM</span></code> ≥ 2)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">DEBUG</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">FALSE</span></code></p></td>
+<td><p>Build in debug mode</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">PRECISION</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">DOUBLE</span></code></p></td>
+<td><p>Floating-point precision: <code class="docutils literal notranslate"><span class="pre">SINGLE</span></code> or <code class="docutils literal notranslate"><span class="pre">DOUBLE</span></code></p></td>
+</tr>
+</tbody>
+</table>
+<p>Then build:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span><span class="nv">$MPM_HOME</span>/Build_Gnumake
+make<span class="w"> </span>-j<span class="k">$(</span>nproc<span class="k">)</span>
+</pre></div>
+</div>
+<p>The executable is named <code class="docutils literal notranslate"><span class="pre">ExaGOOP&lt;dim&gt;d.&lt;comp&gt;[.&lt;parallel&gt;].ex</span></code> and is
+placed in the same directory.</p>
+</section>
+<section id="verifying-the-build">
+<h2>Verifying the Build<a class="headerlink" href="#verifying-the-build" title="Link to this heading"></a></h2>
+<p>The quickest verification is to run the 1-D axial bar vibration test, which
+has no physics-module dependencies and produces a known analytical solution:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span><span class="nv">$MPM_HOME</span>/Tests/1D_Axial_Bar_Vibration
+sh<span class="w"> </span>Generate_MPs_and_InputFiles.sh
+<span class="c1"># This creates an initial material point file (mpm_particles.dat or mpm_particles.h5) and an input file- Inputs_1DAxialBarVibration.inp</span>
+<span class="c1"># Now copy the ExaGOOP executable from the build folder and run the solver</span>
+./ExaGOOP1d.*.ex<span class="w"> </span>Inputs_1DAxialBarVibration.ex
+</pre></div>
+</div>
+<p>If the run completes without errors, the build is working correctly.  For a
+richer check, the tutorials section walks through two multi-physics test cases
+end-to-end.</p>
+</section>
+<section id="visualizing-output">
+<h2>Visualizing Output<a class="headerlink" href="#visualizing-output" title="Link to this heading"></a></h2>
+<p>ExaGOOP writes output in the AMReX plotfile format. Two types of output files
+are produced:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">plt*</span></code> files — particle (material point) data</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">nplt*</span></code> files — nodal grid data</p></li>
+</ul>
+<p>Both can be loaded directly in <a class="reference external" href="https://www.paraview.org/">ParaView</a> using
+the built-in AMReX/BoxLib reader. Open the top-level <code class="docutils literal notranslate"><span class="pre">plt*/</span></code> or <code class="docutils literal notranslate"><span class="pre">nplt*/</span></code>
+directory as a dataset.</p>
+</section>
+<section id="getting-help">
+<h2>Getting Help<a class="headerlink" href="#getting-help" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>For questions and discussion: <a class="reference external" href="https://github.com/NatLabRockies/Exagoop/discussions">GitHub Discussions</a></p></li>
+<li><p>To report a bug: <a class="reference external" href="https://github.com/NatLabRockies/Exagoop/issues">GitHub Issues</a>
+(include your compiler version, MPI implementation, and the build flags used)</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="intro.html" class="btn btn-neutral float-left" title="Introduction" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="tutorial_dambreak.html" class="btn btn-neutral float-right" title="Setting up the simulation folder" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021-2022, ExaGOOPTeam.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

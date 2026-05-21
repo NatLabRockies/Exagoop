@@ -1,0 +1,516 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Embedded Boundaries via Level Sets (USE_EB) &mdash; ExaGOOP 22.12 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="_static/theme.css?v=df66b05f" />
+      <link rel="stylesheet" type="text/css" href="_static/css/custom.css" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=d09052ea"></script>
+      <script src="_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="UDF Moving Wall Boundary Conditions" href="udf_moving_wall.html" />
+    <link rel="prev" title="Temperature Module (USE_TEMP)" href="temperature_module.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            ExaGOOP
+              <img src="_static/ExaGOOP_Logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Introduction:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Getting Started:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="tutorial_dambreak.html">Setting up the simulation folder</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial_dambreak.html#setting-up-the-input-file">Setting up the input file</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial_dambreak.html#generating-initial-material-point-file">Generating initial material point file</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial_dambreak.html#running-exagoop-and-viewing-output-files">Running ExaGOOP and viewing output files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial_heat_cylinder.html">Tutorial: 2-D Steady Heat Conduction around a Cylinder (Dirichlet)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User Guide:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="input_reference.html">Input File Reference</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Physics Modules:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="physics_modules.html">Physics Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="temperature_module.html">Temperature Module (<code class="docutils literal notranslate"><span class="pre">USE_TEMP</span></code>)</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Embedded Boundaries via Level Sets (<code class="docutils literal notranslate"><span class="pre">USE_EB</span></code>)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#build-requirements">Build requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#multi-body-implementation">Multi-body implementation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#supported-geometry-types">Supported geometry types</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#sphere-circle-in-2-d">Sphere (circle in 2-D)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#plane-half-space">Plane (half-space)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cylinder">Cylinder</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#momentum-level-set-boundary-conditions">Momentum level-set boundary conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#temperature-level-set-boundary-conditions">Temperature level-set boundary conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#implementation-notes">Implementation notes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#complete-per-body-input-block-example">Complete per-body input block example</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="udf_moving_wall.html">UDF Moving Wall Boundary Conditions</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Numerical Methods:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="theory.html">Numerical Methods</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Validation and Verification:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="validation.html">Axial vibration of an elastic bar</a></li>
+<li class="toctree-l1"><a class="reference internal" href="validation.html#collision-of-two-dimensional-elastic-disks">Collision of two-dimensional elastic disks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="validation.html#dam-break-simulation">Dam break simulation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="validation.html#torsion-of-a-three-dimensional-elastic-column">Torsion of a three-dimensional elastic column</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Build Reference:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="build_options.html">Build Options Reference</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">References:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="references.html">References</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">ExaGOOP</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Embedded Boundaries via Level Sets (<code class="docutils literal notranslate"><span class="pre">USE_EB</span></code>)</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/levelsets.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="embedded-boundaries-via-level-sets-use-eb">
+<span id="levelsets"></span><h1>Embedded Boundaries via Level Sets (<code class="docutils literal notranslate"><span class="pre">USE_EB</span></code>)<a class="headerlink" href="#embedded-boundaries-via-level-sets-use-eb" title="Link to this heading"></a></h1>
+<p>ExaGOOP can represent solid obstacles inside the computational domain using a
+<em>signed-distance level-set</em> approach built on top of the AMReX Embedded
+Boundary (EB2) library.  Particles that fall inside a body are removed at
+initialisation; during time advancement the level-set field is used to enforce
+momentum and thermal boundary conditions on grid nodes that lie on or near each
+body surface, and to reflect or absorb particles that attempt to cross it.</p>
+<section id="build-requirements">
+<h2>Build requirements<a class="headerlink" href="#build-requirements" title="Link to this heading"></a></h2>
+<p>Level-set geometry is a compile-time feature controlled by the <code class="docutils literal notranslate"><span class="pre">USE_EB</span></code> flag.</p>
+<p><strong>GNUmake</strong></p>
+<div class="highlight-makefile notranslate"><div class="highlight"><pre><span></span><span class="nv">USE_EB</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>TRUE<span class="w">    </span><span class="c1"># enables embedded-boundary support</span>
+<span class="nv">USE_EB</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>FALSE<span class="w">   </span><span class="c1"># disables (default)</span>
+</pre></div>
+</div>
+<p><strong>CMake</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cmake<span class="w"> </span>-DEXAGOOP_USE_EB<span class="o">=</span>ON<span class="w">  </span>..<span class="w">   </span><span class="c1"># enables EB</span>
+cmake<span class="w"> </span>-DEXAGOOP_USE_EB<span class="o">=</span>OFF<span class="w"> </span>..<span class="w">   </span><span class="c1"># disables EB (default)</span>
+</pre></div>
+</div>
+<p>When <code class="docutils literal notranslate"><span class="pre">USE_EB=TRUE</span></code>, the preprocessor symbol <code class="docutils literal notranslate"><span class="pre">USE_EB=1</span></code> is injected and
+all <code class="docutils literal notranslate"><span class="pre">#if</span> <span class="pre">USE_EB</span></code> guarded blocks in the source are compiled in.  The AMReX
+EB2 library is linked automatically via the AMReX submodule.</p>
+</section>
+<section id="multi-body-implementation">
+<h2>Multi-body implementation<a class="headerlink" href="#multi-body-implementation" title="Link to this heading"></a></h2>
+<p>ExaGOOP supports up to <code class="docutils literal notranslate"><span class="pre">EXAGOOP_MAX_LS_BODIES</span> <span class="pre">=</span> <span class="pre">8</span></code> independent level-set
+bodies simultaneously.  Each body is described by a <em>named block</em> in the
+input file.  The set of active body names is declared first:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>eb2.body_names<span class="w"> </span><span class="o">=</span><span class="w"> </span>cylinder<span class="w"> </span>plate
+</pre></div>
+</div>
+<p>ExaGOOP reads this list and then processes a ParmParse namespace for every
+name in it (e.g. <code class="docutils literal notranslate"><span class="pre">cylinder.*</span></code>, <code class="docutils literal notranslate"><span class="pre">plate.*</span></code>).  Each body owns an
+independent signed-distance <code class="docutils literal notranslate"><span class="pre">MultiFab</span></code> (<code class="docutils literal notranslate"><span class="pre">lsphi</span></code>) built at a refinement
+factor relative to the background grid, and an independent set of momentum
+and temperature boundary condition parameters.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">LevelSetBody</span></code> struct (<code class="docutils literal notranslate"><span class="pre">Source/mpm_eb.H</span></code>) aggregates all per-body
+data:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">name</span></code> — string identifier matching the entry in <code class="docutils literal notranslate"><span class="pre">eb2.body_names</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lsphi</span></code> — pointer to the per-body nodal signed-distance <code class="docutils literal notranslate"><span class="pre">MultiFab</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ls_refinement</span></code> — refinement factor for the level-set grid (1 = same
+resolution as the background grid)</p></li>
+<li><p>Momentum BC parameters: <code class="docutils literal notranslate"><span class="pre">mom_bc_type</span></code>, <code class="docutils literal notranslate"><span class="pre">wall_mu</span></code>, <code class="docutils literal notranslate"><span class="pre">wall_vel</span></code></p></li>
+<li><p>Temperature BC parameters: <code class="docutils literal notranslate"><span class="pre">temp_bc_type</span></code>, <code class="docutils literal notranslate"><span class="pre">T_wall</span></code>, <code class="docutils literal notranslate"><span class="pre">heat_flux</span></code>,
+<code class="docutils literal notranslate"><span class="pre">h_conv</span></code>, <code class="docutils literal notranslate"><span class="pre">T_inf</span></code></p></li>
+</ul>
+<p>At startup, <code class="docutils literal notranslate"><span class="pre">mpm_ebtools::init_eb()</span></code> loops over <code class="docutils literal notranslate"><span class="pre">eb2.body_names</span></code>, builds
+the AMReX EB2 implicit function for each body, fills its <code class="docutils literal notranslate"><span class="pre">lsphi</span></code> <code class="docutils literal notranslate"><span class="pre">MultiFab</span></code>,
+and appends the populated <code class="docutils literal notranslate"><span class="pre">LevelSetBody</span></code> to <code class="docutils literal notranslate"><span class="pre">mpm_ebtools::ls_bodies</span></code>.
+Subsequent operations (particle removal, nodal BC enforcement, particle
+reflection) iterate over this vector.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The AMReX <code class="docutils literal notranslate"><span class="pre">EBFArrayBoxFactory</span></code> — which provides cell-type flags used by
+some AMReX routines — is currently built from the <em>last</em> body processed.
+For single-body simulations this is exact.  Multi-body support for the
+factory (union of all body shops) is a planned enhancement; the
+per-body <code class="docutils literal notranslate"><span class="pre">lsphi</span></code> fields are already fully independent.</p>
+</div>
+</section>
+<section id="supported-geometry-types">
+<h2>Supported geometry types<a class="headerlink" href="#supported-geometry-types" title="Link to this heading"></a></h2>
+<p>Each body must specify a <code class="docutils literal notranslate"><span class="pre">&lt;name&gt;.geom_type</span></code> entry.  The three analytic
+types currently supported are:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 80.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p><code class="docutils literal notranslate"><span class="pre">geom_type</span></code></p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">sphere</span></code></p></td>
+<td><p>Sphere (circle in 2-D) defined by a centre point and radius.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">plane</span></code></p></td>
+<td><p>Half-space defined by a point on the plane and an outward normal.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">cylinder</span></code></p></td>
+<td><p>Finite cylinder defined by a centre, direction axis, radius, and
+half-length.</p></td>
+</tr>
+</tbody>
+</table>
+<p>A fourth type <code class="docutils literal notranslate"><span class="pre">udf</span></code> allows an arbitrary signed-distance function to be
+supplied as a runtime-loaded shared library; see <a class="reference internal" href="udf_moving_wall.html#udf-moving-wall"><span class="std std-ref">UDF Moving Wall Boundary Conditions</span></a> for
+the shared-library mechanism (an analogous <code class="docutils literal notranslate"><span class="pre">geom_type</span> <span class="pre">=</span> <span class="pre">udf</span></code> path exists
+in <code class="docutils literal notranslate"><span class="pre">Source/mpm_eb_udf_build.cpp</span></code>).</p>
+<section id="sphere-circle-in-2-d">
+<h3>Sphere (circle in 2-D)<a class="headerlink" href="#sphere-circle-in-2-d" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&lt;name&gt;.geom_type<span class="w">                </span><span class="o">=</span><span class="w"> </span>sphere
+&lt;name&gt;.sphere_radius<span class="w">            </span><span class="o">=</span><span class="w"> </span><span class="m">0</span>.15
+&lt;name&gt;.sphere_center<span class="w">            </span><span class="o">=</span><span class="w"> </span><span class="m">0</span>.5<span class="w"> </span><span class="m">0</span>.5<span class="w"> </span><span class="m">0</span>.0<span class="w">   </span><span class="c1"># x y z (z ignored in 2-D)</span>
+&lt;name&gt;.sphere_has_fluid_inside<span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="w">          </span><span class="c1"># false =&gt; fluid outside</span>
+&lt;name&gt;.ls_refinement<span class="w">            </span><span class="o">=</span><span class="w"> </span><span class="m">2</span><span class="w">              </span><span class="c1"># level-set grid refinement</span>
+</pre></div>
+</div>
+</section>
+<section id="plane-half-space">
+<h3>Plane (half-space)<a class="headerlink" href="#plane-half-space" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&lt;name&gt;.geom_type<span class="w">        </span><span class="o">=</span><span class="w"> </span>plane
+&lt;name&gt;.plane_point<span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="m">0</span>.5<span class="w"> </span><span class="m">0</span>.0<span class="w"> </span><span class="m">0</span>.0<span class="w">   </span><span class="c1"># a point on the plane</span>
+&lt;name&gt;.plane_normal<span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="m">1</span>.0<span class="w"> </span><span class="m">0</span>.0<span class="w"> </span><span class="m">0</span>.0<span class="w">   </span><span class="c1"># outward normal (need not be unit)</span>
+&lt;name&gt;.ls_refinement<span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="m">1</span>
+</pre></div>
+</div>
+</section>
+<section id="cylinder">
+<h3>Cylinder<a class="headerlink" href="#cylinder" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&lt;name&gt;.geom_type<span class="w">             </span><span class="o">=</span><span class="w"> </span>cylinder
+&lt;name&gt;.cylinder_radius<span class="w">       </span><span class="o">=</span><span class="w"> </span><span class="m">0</span>.1
+&lt;name&gt;.cylinder_center<span class="w">       </span><span class="o">=</span><span class="w"> </span><span class="m">0</span>.5<span class="w"> </span><span class="m">0</span>.5<span class="w"> </span><span class="m">0</span>.5<span class="w">   </span><span class="c1"># axis centre</span>
+&lt;name&gt;.cylinder_direction<span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="m">2</span><span class="w">              </span><span class="c1"># axis direction: 0=x, 1=y, 2=z</span>
+&lt;name&gt;.cylinder_half_height<span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="m">0</span>.3
+&lt;name&gt;.ls_refinement<span class="w">         </span><span class="o">=</span><span class="w"> </span><span class="m">2</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="momentum-level-set-boundary-conditions">
+<h2>Momentum level-set boundary conditions<a class="headerlink" href="#momentum-level-set-boundary-conditions" title="Link to this heading"></a></h2>
+<p>Each body’s momentum BC type is set with <code class="docutils literal notranslate"><span class="pre">&lt;name&gt;.levelset_mom</span></code>.  The three
+recognised values map to the same integer BC codes used for domain-wall
+momentum BCs:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 22.0%" />
+<col style="width: 78.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p><code class="docutils literal notranslate"><span class="pre">levelset_mom</span></code></p></th>
+<th class="head"><p>Behaviour</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">noslipwall</span></code></p></td>
+<td><p>Full no-slip: at contact, the particle velocity is set to the body
+wall velocity (default <code class="docutils literal notranslate"><span class="pre">0.0</span></code> for all components; can be overridden
+with <code class="docutils literal notranslate"><span class="pre">&lt;name&gt;.wall_vel</span></code>).  The same condition is applied to grid
+nodes whose level-set value is negative.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">slipwall</span></code></p></td>
+<td><p>Slip wall: the normal velocity component is reversed on contact; the
+tangential component is unconstrained.  Grid nodes at the surface have
+only their normal velocity component overwritten.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">partialslip</span></code></p></td>
+<td><p>Partial-slip Coulomb friction: contact is treated as no-slip but a
+Coulomb slip correction is applied when the tangential stress exceeds
+<code class="docutils literal notranslate"><span class="pre">&lt;name&gt;.wall_mu</span></code> times the normal stress.</p></td>
+</tr>
+</tbody>
+</table>
+<p>Optional per-body sub-parameters for momentum BCs:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 38.0%" />
+<col style="width: 12.0%" />
+<col style="width: 50.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">&lt;name&gt;.levelset_mom</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">string</span></code></p></td>
+<td><p>Momentum BC type: <code class="docutils literal notranslate"><span class="pre">noslipwall</span></code>, <code class="docutils literal notranslate"><span class="pre">slipwall</span></code>, or <code class="docutils literal notranslate"><span class="pre">partialslip</span></code>.
+Default: <code class="docutils literal notranslate"><span class="pre">noslipwall</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">&lt;name&gt;.wall_mu</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Real</span></code></p></td>
+<td><p>Coulomb friction coefficient.  Only used when
+<code class="docutils literal notranslate"><span class="pre">levelset_mom</span> <span class="pre">=</span> <span class="pre">partialslip</span></code>.  Default: <code class="docutils literal notranslate"><span class="pre">0.0</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">&lt;name&gt;.wall_vel</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Real[SPACEDIM]</span></code></p></td>
+<td><p>Constant wall velocity vector (m/s).  Applied when
+<code class="docutils literal notranslate"><span class="pre">levelset_mom</span> <span class="pre">=</span> <span class="pre">noslipwall</span></code>.  Default: <code class="docutils literal notranslate"><span class="pre">0.0</span> <span class="pre">0.0</span> <span class="pre">0.0</span></code>.</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Example</strong> — stationary no-slip cylinder:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cylinder.levelset_mom<span class="w">  </span><span class="o">=</span><span class="w"> </span>noslipwall
+cylinder.wall_vel<span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="m">0</span>.0<span class="w"> </span><span class="m">0</span>.0<span class="w"> </span><span class="m">0</span>.0
+</pre></div>
+</div>
+<p><strong>Example</strong> — slip sphere:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sphere.levelset_mom<span class="w">    </span><span class="o">=</span><span class="w"> </span>slipwall
+</pre></div>
+</div>
+</section>
+<section id="temperature-level-set-boundary-conditions">
+<h2>Temperature level-set boundary conditions<a class="headerlink" href="#temperature-level-set-boundary-conditions" title="Link to this heading"></a></h2>
+<p>Thermal BCs on level-set bodies are specified under the same per-body
+namespace and require <code class="docutils literal notranslate"><span class="pre">USE_TEMP=TRUE</span></code> at build time.  Four BC types are
+supported:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 22.0%" />
+<col style="width: 78.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p><code class="docutils literal notranslate"><span class="pre">temp_bc_type</span></code></p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">adiabatic</span></code></p></td>
+<td><p>No thermal constraint (natural boundary condition, zero heat flux).
+Grid nodes inside the body are left at whatever temperature the
+particle-to-grid projection deposited.  This is the <strong>default</strong> when
+<code class="docutils literal notranslate"><span class="pre">&lt;name&gt;.temp_bc_type</span></code> is not specified.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">isothermal</span></code></p></td>
+<td><p>Dirichlet (fixed temperature).  Every grid node whose level-set value
+is negative is overwritten with <code class="docutils literal notranslate"><span class="pre">&lt;name&gt;.lset_T_wall</span></code> each time step.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">heatflux</span></code></p></td>
+<td><p>Neumann (prescribed flux).  The surface-node temperature is set by a
+one-sided finite-difference ghost-point formula:</p>
+<div class="math notranslate nohighlight">
+\[T_\text{surface} = T_\text{nb}
+  + \frac{q_\text{prescribed}}{k_\text{node}} \, \Delta x_n\]</div>
+<p>where <span class="math notranslate nohighlight">\(T_\text{nb}\)</span> is the first interior neighbour in the
+dominant surface-normal direction, <span class="math notranslate nohighlight">\(k_\text{node}\)</span> is the
+nodal thermal conductivity interpolated from particles
+(<code class="docutils literal notranslate"><span class="pre">MASS_CONDUCTIVITY</span> <span class="pre">/</span> <span class="pre">MASS_INDEX</span></code>), and <span class="math notranslate nohighlight">\(\Delta x_n\)</span> is
+the grid spacing in that direction.</p>
+</td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">convective</span></code></p></td>
+<td><p>Robin (Newton cooling).  The surface-node temperature is set via a
+Biot-number weighting:</p>
+<div class="math notranslate nohighlight">
+\[T_\text{surface}
+  = \frac{T_\text{nb} + \text{Bi}\, T_\infty}{1 + \text{Bi}},
+\qquad
+\text{Bi} = \frac{h\,\Delta x_n}{k_\text{node}}\]</div>
+<p>where <span class="math notranslate nohighlight">\(h\)</span> is the convective heat-transfer coefficient and
+<span class="math notranslate nohighlight">\(T_\infty\)</span> is the far-field fluid temperature.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>The full set of temperature BC parameters for a level-set body is:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 38.0%" />
+<col style="width: 12.0%" />
+<col style="width: 50.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">&lt;name&gt;.temp_bc_type</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">string</span></code></p></td>
+<td><p>Thermal BC type: <code class="docutils literal notranslate"><span class="pre">adiabatic</span></code>, <code class="docutils literal notranslate"><span class="pre">isothermal</span></code>, <code class="docutils literal notranslate"><span class="pre">heatflux</span></code>, or
+<code class="docutils literal notranslate"><span class="pre">convective</span></code>.  Default: <code class="docutils literal notranslate"><span class="pre">adiabatic</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">&lt;name&gt;.lset_T_wall</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Real</span></code></p></td>
+<td><p>Surface temperature <span class="math notranslate nohighlight">\(T_w\)</span>.  Used when
+<code class="docutils literal notranslate"><span class="pre">temp_bc_type</span> <span class="pre">=</span> <span class="pre">isothermal</span></code>.  Default: <code class="docutils literal notranslate"><span class="pre">0.0</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">&lt;name&gt;.lset_heat_flux</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Real</span></code></p></td>
+<td><p>Prescribed surface heat flux <span class="math notranslate nohighlight">\(q\)</span> (energy per unit area per
+unit time).  Used when <code class="docutils literal notranslate"><span class="pre">temp_bc_type</span> <span class="pre">=</span> <span class="pre">heatflux</span></code>.  Default: <code class="docutils literal notranslate"><span class="pre">0.0</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">&lt;name&gt;.lset_h_conv</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Real</span></code></p></td>
+<td><p>Convective heat-transfer coefficient <span class="math notranslate nohighlight">\(h\)</span>.  Used when
+<code class="docutils literal notranslate"><span class="pre">temp_bc_type</span> <span class="pre">=</span> <span class="pre">convection</span></code>.  Default: <code class="docutils literal notranslate"><span class="pre">0.0</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">&lt;name&gt;.lset_T_inf</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Real</span></code></p></td>
+<td><p>Far-field fluid temperature <span class="math notranslate nohighlight">\(T_\infty\)</span>.  Used when
+<code class="docutils literal notranslate"><span class="pre">temp_bc_type</span> <span class="pre">=</span> <span class="pre">convection</span></code>.  Default: <code class="docutils literal notranslate"><span class="pre">0.0</span></code>.</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Example</strong> — isothermal cylinder at <span class="math notranslate nohighlight">\(T = 1\)</span>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cylinder.temp_bc_type<span class="w">  </span><span class="o">=</span><span class="w"> </span>isothermal
+cylinder.lset_T_wall<span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="m">1</span>.0
+</pre></div>
+</div>
+<p><strong>Example</strong> — convectively cooled sphere:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sphere.temp_bc_type<span class="w">    </span><span class="o">=</span><span class="w"> </span>convection
+sphere.lset_h_conv<span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="m">5</span>.0
+sphere.lset_T_inf<span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="m">300</span>.0
+</pre></div>
+</div>
+</section>
+<section id="implementation-notes">
+<h2>Implementation notes<a class="headerlink" href="#implementation-notes" title="Link to this heading"></a></h2>
+<p><strong>Predictor–corrector consistency.</strong>  When the MUSL stress-update scheme is
+used, temperature BCs are applied twice per time step: once during the
+predictor pass (Dirichlet-only, <code class="docutils literal notranslate"><span class="pre">dirichlet_only</span> <span class="pre">=</span> <span class="pre">true</span></code>) and once during
+the corrector pass (all BC types).  This matches the treatment of domain-wall
+temperature BCs in <code class="docutils literal notranslate"><span class="pre">Apply_Nodal_BCs_Temperature</span></code> and ensures that the
+isothermal constraint is active at both half-steps.</p>
+<p><strong>Normal direction for flux and convection BCs.</strong>  For <code class="docutils literal notranslate"><span class="pre">heatflux</span></code> and
+<code class="docutils literal notranslate"><span class="pre">convective</span></code> types, the interior-neighbour node is found by stepping one
+cell in the direction of the largest-magnitude component of the surface
+normal (the signed-distance gradient at the node).  This one-dimensional
+stencil is consistent with the domain-wall flux and convection BCs and avoids
+off-axis ambiguity near corners.</p>
+<p><strong>Level-set grid refinement.</strong>  The signed-distance field is built on a grid
+refined by <code class="docutils literal notranslate"><span class="pre">ls_refinement</span></code> relative to the background MPM grid.  Higher
+refinement gives a more accurate surface representation but increases memory.
+A value of 1–2 is sufficient for smooth analytic bodies; sharp-edged bodies
+may require 4 or higher.</p>
+<p><strong>Particle removal.</strong>  At initialisation, particles whose level-set value
+(evaluated by multilinear interpolation of <code class="docutils literal notranslate"><span class="pre">lsphi</span></code>) is negative are removed
+from the simulation.  The removal loop iterates over all bodies so that
+particles inside any body are eliminated.</p>
+</section>
+<section id="complete-per-body-input-block-example">
+<h2>Complete per-body input block example<a class="headerlink" href="#complete-per-body-input-block-example" title="Link to this heading"></a></h2>
+<p>The following block defines a single circular cylinder (2-D sphere) at domain
+centre, with a slip momentum BC and an isothermal thermal BC.  This is the
+configuration used in the <code class="docutils literal notranslate"><span class="pre">2D_Heat_Conduction_Cylinder_Dirichlet</span></code> tutorial
+(see <a class="reference internal" href="tutorial_heat_cylinder.html#tutorial-heat-cylinder"><span class="std std-ref">Tutorial: 2-D Steady Heat Conduction around a Cylinder (Dirichlet)</span></a>).</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>eb2.body_names<span class="w">                      </span><span class="o">=</span><span class="w"> </span>cylinder
+
+cylinder.geom_type<span class="w">                  </span><span class="o">=</span><span class="w"> </span>sphere
+cylinder.sphere_radius<span class="w">              </span><span class="o">=</span><span class="w"> </span><span class="m">0</span>.15
+cylinder.sphere_center<span class="w">              </span><span class="o">=</span><span class="w"> </span><span class="m">0</span>.5<span class="w"> </span><span class="m">0</span>.5<span class="w"> </span><span class="m">0</span>.0
+cylinder.sphere_has_fluid_inside<span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span>
+cylinder.ls_refinement<span class="w">              </span><span class="o">=</span><span class="w"> </span><span class="m">2</span>
+cylinder.levelset_mom<span class="w">               </span><span class="o">=</span><span class="w"> </span>slipwall
+cylinder.temp_bc_type<span class="w">               </span><span class="o">=</span><span class="w"> </span>isothermal
+cylinder.lset_T_wall<span class="w">                </span><span class="o">=</span><span class="w"> </span><span class="m">1</span>.0
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="temperature_module.html" class="btn btn-neutral float-left" title="Temperature Module (USE_TEMP)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="udf_moving_wall.html" class="btn btn-neutral float-right" title="UDF Moving Wall Boundary Conditions" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021-2022, ExaGOOPTeam.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

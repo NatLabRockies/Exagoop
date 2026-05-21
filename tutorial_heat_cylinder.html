@@ -1,0 +1,415 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tutorial: 2-D Steady Heat Conduction around a Cylinder (Dirichlet) &mdash; ExaGOOP 22.12 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="_static/theme.css?v=df66b05f" />
+      <link rel="stylesheet" type="text/css" href="_static/css/custom.css" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=d09052ea"></script>
+      <script src="_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Input File Reference" href="input_reference.html" />
+    <link rel="prev" title="Setting up the simulation folder" href="tutorial_dambreak.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            ExaGOOP
+              <img src="_static/ExaGOOP_Logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Introduction:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Getting Started:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="tutorial_dambreak.html">Setting up the simulation folder</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial_dambreak.html#setting-up-the-input-file">Setting up the input file</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial_dambreak.html#generating-initial-material-point-file">Generating initial material point file</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial_dambreak.html#running-exagoop-and-viewing-output-files">Running ExaGOOP and viewing output files</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Tutorial: 2-D Steady Heat Conduction around a Cylinder (Dirichlet)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#physical-problem">Physical problem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#analytical-solution">Analytical solution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#material-properties">Material properties</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#domain-and-discretisation">Domain and discretisation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#boundary-conditions">Boundary conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#setting-up-the-test-case">Setting up the test case</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#building">Building</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#running">Running</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#post-processing-and-validation">Post-processing and validation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#expected-result">Expected result</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User Guide:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="input_reference.html">Input File Reference</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Physics Modules:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="physics_modules.html">Physics Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="temperature_module.html">Temperature Module (<code class="docutils literal notranslate"><span class="pre">USE_TEMP</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="levelsets.html">Embedded Boundaries via Level Sets (<code class="docutils literal notranslate"><span class="pre">USE_EB</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="udf_moving_wall.html">UDF Moving Wall Boundary Conditions</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Numerical Methods:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="theory.html">Numerical Methods</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Validation and Verification:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="validation.html">Axial vibration of an elastic bar</a></li>
+<li class="toctree-l1"><a class="reference internal" href="validation.html#collision-of-two-dimensional-elastic-disks">Collision of two-dimensional elastic disks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="validation.html#dam-break-simulation">Dam break simulation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="validation.html#torsion-of-a-three-dimensional-elastic-column">Torsion of a three-dimensional elastic column</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Build Reference:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="build_options.html">Build Options Reference</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">References:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="references.html">References</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">ExaGOOP</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Tutorial: 2-D Steady Heat Conduction around a Cylinder (Dirichlet)</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/tutorial_heat_cylinder.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="tutorial-2-d-steady-heat-conduction-around-a-cylinder-dirichlet">
+<span id="tutorial-heat-cylinder"></span><h1>Tutorial: 2-D Steady Heat Conduction around a Cylinder (Dirichlet)<a class="headerlink" href="#tutorial-2-d-steady-heat-conduction-around-a-cylinder-dirichlet" title="Link to this heading"></a></h1>
+<p>This tutorial walks through the <code class="docutils literal notranslate"><span class="pre">Tests/2D_Heat_Conduction_Cylinder_Dirichlet</span></code>
+test case.  It demonstrates how to use an embedded-boundary level-set body
+with an isothermal (Dirichlet) thermal BC to compute steady-state heat
+conduction in a 2-D domain containing a circular cylinder — the canonical
+Laplace-equation problem with an analytic solution.</p>
+<p>Required build flags: <code class="docutils literal notranslate"><span class="pre">USE_EB=TRUE</span></code>, <code class="docutils literal notranslate"><span class="pre">USE_TEMP=TRUE</span></code>, <code class="docutils literal notranslate"><span class="pre">DIM=2</span></code>.</p>
+<section id="physical-problem">
+<h2>Physical problem<a class="headerlink" href="#physical-problem" title="Link to this heading"></a></h2>
+<p>A unit square domain <span class="math notranslate nohighlight">\([0,1]^2\)</span> contains a circular cylinder of radius
+<span class="math notranslate nohighlight">\(r = 0.15\)</span> centred at <span class="math notranslate nohighlight">\((0.5,\,0.5)\)</span>.  The four domain walls are
+held at <span class="math notranslate nohighlight">\(T = 0\)</span>, and the cylinder surface is isothermal at <span class="math notranslate nohighlight">\(T = 1\)</span>.
+There are no volumetric heat sources, and the initial elastic solid velocity is zero throughout.</p>
+<p>The governing equation is the steady-state heat equation (Laplace equation):</p>
+<div class="math notranslate nohighlight">
+\[\nabla^2 T = 0\]</div>
+<p>with boundary conditions:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}T &amp;= 0 \quad \text{on all four domain walls} \\
+T &amp;= 1 \quad \text{on the cylinder surface } (r = 0.15)\end{split}\]</div>
+<p>In the time-dependent MPM formulation, the simulation is advanced until
+the transient decays and the solution converges to the steady state.  The
+thermal diffusivity is <span class="math notranslate nohighlight">\(\alpha = k / (\rho\,c_p) = 1\)</span>, so the
+characteristic diffusion time across the domain is <span class="math notranslate nohighlight">\(t_\alpha \sim 1\)</span>.
+The simulation is run to <span class="math notranslate nohighlight">\(t = 0.1\)</span>, by which point the solution has
+relaxed to within plotting accuracy of the Laplace steady state.</p>
+</section>
+<section id="analytical-solution">
+<h2>Analytical solution<a class="headerlink" href="#analytical-solution" title="Link to this heading"></a></h2>
+<p>The steady-state temperature in polar coordinates centred on the cylinder
+axis is:</p>
+<div class="math notranslate nohighlight">
+\[T(r, \theta) =
+  \frac{\ln(R_\text{out}/r)}{\ln(R_\text{out}/r_0)}\]</div>
+<p>where <span class="math notranslate nohighlight">\(r_0 = 0.15\)</span> is the cylinder radius and <span class="math notranslate nohighlight">\(R_\text{out}\)</span>
+is an effective outer radius determined by the Dirichlet condition
+<span class="math notranslate nohighlight">\(T = 0\)</span> on the square boundary.  For a circular outer boundary of
+radius <span class="math notranslate nohighlight">\(R_\text{out}\)</span>, this reduces to:</p>
+<div class="math notranslate nohighlight">
+\[T(r) = \frac{\ln(R_\text{out}/r)}{\ln(R_\text{out}/r_0)}\]</div>
+<p>Because the outer boundary is square rather than circular, the exact solution
+is a 2-D series; however, at large separation the logarithmic profile provides
+an excellent approximation.  The post-processing script in
+<code class="docutils literal notranslate"><span class="pre">PostProcess/validate.py</span></code> computes the numerical angular average at each
+radial band and compares it against a reference profile obtained by
+high-resolution numerical integration of the Laplace equation on the same
+geometry.</p>
+</section>
+<section id="material-properties">
+<h2>Material properties<a class="headerlink" href="#material-properties" title="Link to this heading"></a></h2>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 40.0%" />
+<col style="width: 20.0%" />
+<col style="width: 40.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Property</p></th>
+<th class="head"><p>Value</p></th>
+<th class="head"><p>Notes</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Density <span class="math notranslate nohighlight">\(\rho\)</span></p></td>
+<td><p>1.0</p></td>
+<td><p>uniform</p></td>
+</tr>
+<tr class="row-odd"><td><p>Specific heat <span class="math notranslate nohighlight">\(c_p\)</span></p></td>
+<td><p>1.0</p></td>
+<td><p>uniform; gives <span class="math notranslate nohighlight">\(\alpha = 1\)</span></p></td>
+</tr>
+<tr class="row-even"><td><p>Thermal conductivity <span class="math notranslate nohighlight">\(k\)</span></p></td>
+<td><p>1.0</p></td>
+<td><p>uniform</p></td>
+</tr>
+<tr class="row-odd"><td><p>Volumetric heat source <span class="math notranslate nohighlight">\(\dot{q}\)</span></p></td>
+<td><p>0.0</p></td>
+<td><p>no internal source</p></td>
+</tr>
+<tr class="row-even"><td><p>Initial temperature <span class="math notranslate nohighlight">\(T_0\)</span></p></td>
+<td><p>0.0</p></td>
+<td><p>uniform; below the cylinder BC</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="domain-and-discretisation">
+<h2>Domain and discretisation<a class="headerlink" href="#domain-and-discretisation" title="Link to this heading"></a></h2>
+<p>The computational domain is the unit square <span class="math notranslate nohighlight">\([0,1]^2\)</span> discretised
+with a <span class="math notranslate nohighlight">\(128 \times 128\)</span> background grid (<code class="docutils literal notranslate"><span class="pre">mpm.ncells</span> <span class="pre">=</span> <span class="pre">128</span> <span class="pre">128</span> <span class="pre">0</span></code>).
+One material point per cell is placed throughout the domain excluding the
+cylinder interior, giving approximately 15 000 active particles.  The time
+step is fixed at <span class="math notranslate nohighlight">\(\Delta t = 10^{-5}\)</span> and the simulation runs to
+<span class="math notranslate nohighlight">\(t_\text{final} = 0.1\)</span>.</p>
+<p>The level-set grid is refined by a factor of 2 (<code class="docutils literal notranslate"><span class="pre">cylinder.ls_refinement</span> <span class="pre">=</span> <span class="pre">2</span></code>),
+giving an effective resolution of <span class="math notranslate nohighlight">\(256 \times 256\)</span> for the signed-distance
+field, which accurately represents the circular geometry.</p>
+</section>
+<section id="boundary-conditions">
+<h2>Boundary conditions<a class="headerlink" href="#boundary-conditions" title="Link to this heading"></a></h2>
+<p><strong>Domain walls</strong> — all four faces use Dirichlet temperature BCs at <span class="math notranslate nohighlight">\(T = 0\)</span>
+and slip momentum BCs (no momentum exchange with the walls):</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>mpm.bc_xlo_mom<span class="w"> </span><span class="o">=</span><span class="w"> </span>slip
+mpm.bc_xhi_mom<span class="w"> </span><span class="o">=</span><span class="w"> </span>slip
+mpm.bc_ylo_mom<span class="w"> </span><span class="o">=</span><span class="w"> </span>slip
+mpm.bc_yhi_mom<span class="w"> </span><span class="o">=</span><span class="w"> </span>slip
+
+mpm.bc_xlo_temp<span class="w">          </span><span class="o">=</span><span class="w"> </span>dirichlet
+mpm.bc_xlo_temp.T_wall<span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="m">0</span>.0
+mpm.bc_xhi_temp<span class="w">          </span><span class="o">=</span><span class="w"> </span>dirichlet
+mpm.bc_xhi_temp.T_wall<span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="m">0</span>.0
+mpm.bc_ylo_temp<span class="w">          </span><span class="o">=</span><span class="w"> </span>dirichlet
+mpm.bc_ylo_temp.T_wall<span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="m">0</span>.0
+mpm.bc_yhi_temp<span class="w">          </span><span class="o">=</span><span class="w"> </span>dirichlet
+mpm.bc_yhi_temp.T_wall<span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="m">0</span>.0
+</pre></div>
+</div>
+<p><strong>Cylinder surface</strong> — isothermal at <span class="math notranslate nohighlight">\(T = 1\)</span> with a slip momentum BC
+(no drag on the particles from the cylinder):</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>eb2.body_names<span class="w">                      </span><span class="o">=</span><span class="w"> </span>cylinder
+
+cylinder.geom_type<span class="w">                  </span><span class="o">=</span><span class="w"> </span>sphere
+cylinder.sphere_radius<span class="w">              </span><span class="o">=</span><span class="w"> </span><span class="m">0</span>.15
+cylinder.sphere_center<span class="w">              </span><span class="o">=</span><span class="w"> </span><span class="m">0</span>.5<span class="w"> </span><span class="m">0</span>.5<span class="w"> </span><span class="m">0</span>.0
+cylinder.sphere_has_fluid_inside<span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span>
+cylinder.ls_refinement<span class="w">              </span><span class="o">=</span><span class="w"> </span><span class="m">2</span>
+cylinder.levelset_mom<span class="w">               </span><span class="o">=</span><span class="w"> </span>slipwall
+cylinder.temp_bc_type<span class="w">               </span><span class="o">=</span><span class="w"> </span>isothermal
+cylinder.lset_T_wall<span class="w">                </span><span class="o">=</span><span class="w"> </span><span class="m">1</span>.0
+</pre></div>
+</div>
+<p>For a full description of the level-set BC parameters see <a class="reference internal" href="levelsets.html#levelsets"><span class="std std-ref">Embedded Boundaries via Level Sets (USE_EB)</span></a>.</p>
+</section>
+<section id="setting-up-the-test-case">
+<h2>Setting up the test case<a class="headerlink" href="#setting-up-the-test-case" title="Link to this heading"></a></h2>
+<p>The particle file and input file are generated from the JSON configuration
+in <code class="docutils literal notranslate"><span class="pre">PreProcess/config.json</span></code>.  The key fields are the grid resolution, the
+particles-per-cell count, and the thermal properties:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;grid&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;nx&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">128</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;ny&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">128</span><span class="w"> </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">&quot;ppc&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">],</span>
+<span class="w">  </span><span class="nt">&quot;bodies&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span>
+<span class="w">    </span><span class="nt">&quot;temperature&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;T&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.0</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;spheat&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">1.0</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;thermcond&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">1.0</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;heatsrc&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.0</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>To (re)generate the particle and input files, run from the test directory:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>Tests/2D_Heat_Conduction_Cylinder_Dirichlet/
+bash<span class="w"> </span>Generate_MPs_Inputfile_Generic.sh
+</pre></div>
+</div>
+<p>This writes <code class="docutils literal notranslate"><span class="pre">mpm_particles.dat</span></code> (particle positions and thermal properties)
+and <code class="docutils literal notranslate"><span class="pre">Inputs_2DHeat_Conduction_Cylinder_Dirichlet.inp</span></code> one level up.</p>
+</section>
+<section id="building">
+<h2>Building<a class="headerlink" href="#building" title="Link to this heading"></a></h2>
+<p>Navigate to the test directory and build with the required flags:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>Tests/2D_Heat_Conduction_Cylinder_Dirichlet
+<span class="c1"># create a temporary copy of the GNUmakefile here</span>
+make<span class="w"> </span><span class="nv">USE_EB</span><span class="o">=</span>TRUE<span class="w"> </span><span class="nv">USE_TEMP</span><span class="o">=</span>TRUE<span class="w"> </span><span class="nv">DIM</span><span class="o">=</span><span class="m">2</span><span class="w"> </span>-j4
+</pre></div>
+</div>
+<p>The resulting executable is named
+<code class="docutils literal notranslate"><span class="pre">ExaGOOP2d.&lt;suffix&gt;.ex</span></code> (suffix depends on the build environment).</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><code class="docutils literal notranslate"><span class="pre">USE_EB=TRUE</span></code> pulls in the AMReX EB2 library.  On some systems this
+significantly increases compile time; using <code class="docutils literal notranslate"><span class="pre">-j4</span></code> or higher
+parallelises the build across compilation units.</p>
+</div>
+</section>
+<section id="running">
+<h2>Running<a class="headerlink" href="#running" title="Link to this heading"></a></h2>
+<p>From the test directory:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>./ExaGOOP2d.&lt;suffix&gt;.ex<span class="w"> </span>Inputs_2DHeat_Conduction_Cylinder_Dirichlet.inp
+</pre></div>
+</div>
+<p>For a parallel run on four MPI ranks:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>mpirun<span class="w"> </span>-n<span class="w"> </span><span class="m">4</span><span class="w"> </span>./ExaGOOP2d.&lt;suffix&gt;.ex<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>Inputs_2DHeat_Conduction_Cylinder_Dirichlet.inp
+</pre></div>
+</div>
+<p>ASCII particle snapshots are written at intervals of
+<code class="docutils literal notranslate"><span class="pre">mpm.write_output_time</span> <span class="pre">=</span> <span class="pre">0.01</span></code> to the subdirectory
+<code class="docutils literal notranslate"><span class="pre">2D_Heat_Conduction_Cylinder_Dirichlet/&lt;solution</span> <span class="pre">folder</span> <span class="pre">name</span> <span class="pre">set</span> <span class="pre">in</span> <span class="pre">input</span> <span class="pre">file&gt;/matpnt*</span></code>.  A checkpoint is written
+to <code class="docutils literal notranslate"><span class="pre">2D_Heat_Conduction_Cylinder_Dirichlet/solution</span> <span class="pre">folder</span> <span class="pre">name</span> <span class="pre">set</span> <span class="pre">in</span> <span class="pre">input</span> <span class="pre">file/chk*</span></code> at the same frequency.</p>
+</section>
+<section id="post-processing-and-validation">
+<h2>Post-processing and validation<a class="headerlink" href="#post-processing-and-validation" title="Link to this heading"></a></h2>
+<p>The validation script reads the final particle snapshot, bins particles by
+radial distance from the cylinder axis, and compares the angularly-averaged
+temperature profile against the analytical steady-state:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>Tests/2D_Heat_Conduction_Cylinder_Dirichlet/
+python3<span class="w"> </span>PostProcess/validate.py<span class="w"> </span>--time<span class="w"> </span><span class="m">0</span>.1
+</pre></div>
+</div>
+<p>A passing run prints the RMS error and <code class="docutils literal notranslate"><span class="pre">PASS</span></code>.  The acceptance criterion
+is RMS <span class="math notranslate nohighlight">\(&lt; 5 \times 10^{-2}\)</span> (the finite-time run and square-vs-circle
+outer boundary geometry contribute a background error of order
+<span class="math notranslate nohighlight">\(10^{-2}\)</span>).</p>
+<p>The companion script <code class="docutils literal notranslate"><span class="pre">Plot_Temperature.py</span></code> generates a colour map of the
+particle temperature field together with a contour overlay:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>Plot_Temperature.py
+</pre></div>
+</div>
+</section>
+<section id="expected-result">
+<h2>Expected result<a class="headerlink" href="#expected-result" title="Link to this heading"></a></h2>
+<p>At <span class="math notranslate nohighlight">\(t = 0.1\)</span> the temperature field has relaxed to a radially symmetric
+profile that rises from <span class="math notranslate nohighlight">\(T = 0\)</span> at the domain walls to <span class="math notranslate nohighlight">\(T = 1\)</span>
+at the cylinder surface.  The gradient is steepest in the gap between the
+cylinder and the nearest wall.  Representative radially-averaged values are:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 40.0%" />
+<col style="width: 60.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Radial distance from axis <span class="math notranslate nohighlight">\(r\)</span></p></th>
+<th class="head"><p><span class="math notranslate nohighlight">\(T_\text{avg}(r)\)</span></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0.15 (cylinder surface)</p></td>
+<td><p>1.000</p></td>
+</tr>
+<tr class="row-odd"><td><p>0.20</p></td>
+<td><p>≈ 0.82</p></td>
+</tr>
+<tr class="row-even"><td><p>0.30</p></td>
+<td><p>≈ 0.57</p></td>
+</tr>
+<tr class="row-odd"><td><p>0.40</p></td>
+<td><p>≈ 0.32</p></td>
+</tr>
+<tr class="row-even"><td><p>≥ 0.50 (approaching walls)</p></td>
+<td><p>→ 0.0</p></td>
+</tr>
+</tbody>
+</table>
+<p>The temperature profile is symmetric about the cylinder axis to within
+numerical discretisation error.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="tutorial_dambreak.html" class="btn btn-neutral float-left" title="Setting up the simulation folder" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="input_reference.html" class="btn btn-neutral float-right" title="Input File Reference" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021-2022, ExaGOOPTeam.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

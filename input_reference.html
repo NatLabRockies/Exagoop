@@ -1,0 +1,1314 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Input File Reference &mdash; ExaGOOP 22.12 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="_static/theme.css?v=df66b05f" />
+      <link rel="stylesheet" type="text/css" href="_static/css/custom.css" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=d09052ea"></script>
+      <script src="_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Physics Modules" href="physics_modules.html" />
+    <link rel="prev" title="Tutorial: 2-D Steady Heat Conduction around a Cylinder (Dirichlet)" href="tutorial_heat_cylinder.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            ExaGOOP
+              <img src="_static/ExaGOOP_Logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Introduction:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Getting Started:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="tutorial_dambreak.html">Setting up the simulation folder</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial_dambreak.html#setting-up-the-input-file">Setting up the input file</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial_dambreak.html#generating-initial-material-point-file">Generating initial material point file</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial_dambreak.html#running-exagoop-and-viewing-output-files">Running ExaGOOP and viewing output files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial_heat_cylinder.html">Tutorial: 2-D Steady Heat Conduction around a Cylinder (Dirichlet)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User Guide:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Input File Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#running-the-solver">Running the solver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#particle-file-format">Particle File Format</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#ascii-format">ASCII format</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#hdf5-format">HDF5 format</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#input-parameter-file">Input Parameter File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#mpm-namespace-domain-and-grid"><code class="docutils literal notranslate"><span class="pre">mpm.</span></code> namespace — Domain and Grid</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#mpm-namespace-time-control"><code class="docutils literal notranslate"><span class="pre">mpm.</span></code> namespace — Time Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#mpm-namespace-physics"><code class="docutils literal notranslate"><span class="pre">mpm.</span></code> namespace — Physics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#mpm-namespace-material-points"><code class="docutils literal notranslate"><span class="pre">mpm.</span></code> namespace — Material Points</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#mpm-namespace-output"><code class="docutils literal notranslate"><span class="pre">mpm.</span></code> namespace — Output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#mpm-namespace-diagnostics"><code class="docutils literal notranslate"><span class="pre">mpm.</span></code> namespace — Diagnostics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#mpm-namespace-level-set-output"><code class="docutils literal notranslate"><span class="pre">mpm.</span></code> namespace — Level-Set Output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#mpm-namespace-momentum-boundary-conditions"><code class="docutils literal notranslate"><span class="pre">mpm.</span></code> namespace — Momentum Boundary Conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#mpm-namespace-temperature-boundary-conditions-use-temp-only"><code class="docutils literal notranslate"><span class="pre">mpm.</span></code> namespace — Temperature Boundary Conditions (<code class="docutils literal notranslate"><span class="pre">USE_TEMP</span></code> only)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#amr-namespace-restart"><code class="docutils literal notranslate"><span class="pre">amr.</span></code> namespace — Restart</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#eb2-namespace-embedded-boundaries-use-eb-only"><code class="docutils literal notranslate"><span class="pre">eb2.</span></code> namespace — Embedded Boundaries (<code class="docutils literal notranslate"><span class="pre">USE_EB</span></code> only)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#per-body-namespace-body-name-use-eb-only">Per-body namespace <code class="docutils literal notranslate"><span class="pre">&lt;body_name&gt;.</span></code> (<code class="docutils literal notranslate"><span class="pre">USE_EB</span></code> only)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#minimal-working-example">Minimal Working Example</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Physics Modules:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="physics_modules.html">Physics Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="temperature_module.html">Temperature Module (<code class="docutils literal notranslate"><span class="pre">USE_TEMP</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="levelsets.html">Embedded Boundaries via Level Sets (<code class="docutils literal notranslate"><span class="pre">USE_EB</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="udf_moving_wall.html">UDF Moving Wall Boundary Conditions</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Numerical Methods:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="theory.html">Numerical Methods</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Validation and Verification:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="validation.html">Axial vibration of an elastic bar</a></li>
+<li class="toctree-l1"><a class="reference internal" href="validation.html#collision-of-two-dimensional-elastic-disks">Collision of two-dimensional elastic disks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="validation.html#dam-break-simulation">Dam break simulation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="validation.html#torsion-of-a-three-dimensional-elastic-column">Torsion of a three-dimensional elastic column</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Build Reference:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="build_options.html">Build Options Reference</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">References:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="references.html">References</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">ExaGOOP</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Input File Reference</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/input_reference.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="input-file-reference">
+<span id="input-reference"></span><h1>Input File Reference<a class="headerlink" href="#input-file-reference" title="Link to this heading"></a></h1>
+<p>Every ExaGOOP simulation requires two input files: a plain-text <strong>input
+parameter file</strong> (the <code class="docutils literal notranslate"><span class="pre">*.inp</span></code> file read by AMReX’s ParmParse)
+and a <strong>particle file</strong> containing the initial material point data. Both are
+typically generated by the PreProcess scripts in each test directory; this
+page documents every supported parameter so that you can construct or modify
+them by hand.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Parameters marked <strong>required</strong> have no default and will cause ExaGOOP to
+abort if absent. Parameters marked <em>optional</em> have defaults listed in the
+Default column.</p>
+</div>
+<section id="running-the-solver">
+<h2>Running the solver<a class="headerlink" href="#running-the-solver" title="Link to this heading"></a></h2>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>./ExaGOOP&lt;dim&gt;d.&lt;suffix&gt;.ex<span class="w"> </span>inputs.inp
+<span class="c1"># or with MPI:</span>
+mpirun<span class="w"> </span>-n<span class="w"> </span><span class="m">4</span><span class="w"> </span>./ExaGOOP&lt;dim&gt;d.&lt;suffix&gt;.ex<span class="w"> </span>inputs.inp
+</pre></div>
+</div>
+</section>
+<section id="particle-file-format">
+<h2>Particle File Format<a class="headerlink" href="#particle-file-format" title="Link to this heading"></a></h2>
+<p>ExaGOOP accepts particle files in ASCII (plain text) or HDF5 format. The
+format is auto-detected from the file extension: <code class="docutils literal notranslate"><span class="pre">.dat</span></code> or <code class="docutils literal notranslate"><span class="pre">.inp</span></code> files
+are treated as ASCII; <code class="docutils literal notranslate"><span class="pre">.h5</span></code> files as HDF5.</p>
+<section id="ascii-format">
+<h3>ASCII format<a class="headerlink" href="#ascii-format" title="Link to this heading"></a></h3>
+<p>The file begins with two header lines followed by a comment line listing the
+column names, then one data row per material point:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>dim: &lt;N&gt;
+number_of_material_points: &lt;M&gt;
+# phase x [y] [z]  vx [vy] [vz]  radius  density  &lt;cm_cols&gt;  [T spheat thermcond heatsrc]
+0  0.25  0.0  0.0  0.0  0.0  0.0  0.125  1000.0  ...
+</pre></div>
+</div>
+<p>Column order depends on dimensionality and the constitutive model:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 15.0%" />
+<col style="width: 65.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Column</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">phase</span></code></p></td>
+<td><p>int</p></td>
+<td><p>Material phase index (0 for standard deformable material)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">x</span></code>, <code class="docutils literal notranslate"><span class="pre">y</span></code>, <code class="docutils literal notranslate"><span class="pre">z</span></code></p></td>
+<td><p>real</p></td>
+<td><p>Initial position coordinates (m). <code class="docutils literal notranslate"><span class="pre">y</span></code> and <code class="docutils literal notranslate"><span class="pre">z</span></code> omitted in 1-D and 2-D.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">vx</span></code>, <code class="docutils literal notranslate"><span class="pre">vy</span></code>, <code class="docutils literal notranslate"><span class="pre">vz</span></code></p></td>
+<td><p>real</p></td>
+<td><p>Initial velocity components (m/s). <code class="docutils literal notranslate"><span class="pre">vy</span></code>, <code class="docutils literal notranslate"><span class="pre">vz</span></code> omitted in lower dimensions.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">radius</span></code></p></td>
+<td><p>real</p></td>
+<td><p>Particle radius used for neighbour searches (m). Typically set to half the inter-particle spacing.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">density</span></code></p></td>
+<td><p>real</p></td>
+<td><p>Material density <span class="math notranslate nohighlight">\(\rho_0\)</span> (kg/m³).</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">E</span></code>, <code class="docutils literal notranslate"><span class="pre">nu</span></code></p></td>
+<td><p>real</p></td>
+<td><p>Young’s modulus (Pa) and Poisson’s ratio (–). Present when <code class="docutils literal notranslate"><span class="pre">constitutive_model.type</span> <span class="pre">=</span> <span class="pre">elastic</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Bulk_modulus</span></code>, <code class="docutils literal notranslate"><span class="pre">Gama_pressure</span></code>, <code class="docutils literal notranslate"><span class="pre">Dynamic_viscosity</span></code></p></td>
+<td><p>real</p></td>
+<td><p>Bulk modulus (Pa), pressure ratio <span class="math notranslate nohighlight">\(\Gamma\)</span> (–), dynamic viscosity (Pa·s). Present when <code class="docutils literal notranslate"><span class="pre">constitutive_model.type</span> <span class="pre">=</span> <span class="pre">fluid</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">T</span></code></p></td>
+<td><p>real</p></td>
+<td><p>Initial temperature (K). Present only when compiled with <code class="docutils literal notranslate"><span class="pre">USE_TEMP=1</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">spheat</span></code></p></td>
+<td><p>real</p></td>
+<td><p>Specific heat capacity <span class="math notranslate nohighlight">\(c_p\)</span> (J/(kg·K)). Present only with <code class="docutils literal notranslate"><span class="pre">USE_TEMP=1</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">thermcond</span></code></p></td>
+<td><p>real</p></td>
+<td><p>Thermal conductivity <span class="math notranslate nohighlight">\(k\)</span> (W/(m·K)). Present only with <code class="docutils literal notranslate"><span class="pre">USE_TEMP=1</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">heatsrc</span></code></p></td>
+<td><p>real</p></td>
+<td><p>Volumetric internal heat source <span class="math notranslate nohighlight">\(\dot{q}\)</span> (W/m³). Present only with <code class="docutils literal notranslate"><span class="pre">USE_TEMP=1</span></code>.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="hdf5-format">
+<h3>HDF5 format<a class="headerlink" href="#hdf5-format" title="Link to this heading"></a></h3>
+<p>The HDF5 file stores the same columns as individual 1-D datasets under the
+root group, plus scalar attributes <code class="docutils literal notranslate"><span class="pre">dim</span></code> and <code class="docutils literal notranslate"><span class="pre">number_of_material_points</span></code>.
+Dataset names are identical to the ASCII column names above.</p>
+</section>
+</section>
+<section id="input-parameter-file">
+<h2>Input Parameter File<a class="headerlink" href="#input-parameter-file" title="Link to this heading"></a></h2>
+<p>Parameters are grouped into namespaces. Each line has the form:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">namespace</span><span class="o">.</span><span class="n">parameter_name</span>  <span class="o">=</span>  <span class="n">value</span>
+</pre></div>
+</div>
+<p>Lines beginning with <code class="docutils literal notranslate"><span class="pre">#</span></code> are comments.</p>
+</section>
+<section id="mpm-namespace-domain-and-grid">
+<h2><code class="docutils literal notranslate"><span class="pre">mpm.</span></code> namespace — Domain and Grid<a class="headerlink" href="#mpm-namespace-domain-and-grid" title="Link to this heading"></a></h2>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 32.0%" />
+<col style="width: 10.0%" />
+<col style="width: 15.0%" />
+<col style="width: 43.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Default</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">mpm.prob_lo</span></code></p></td>
+<td><p>real[]</p></td>
+<td><p><strong>required</strong></p></td>
+<td><p>Lower corner of the computational domain (m). Three values always; unused dimensions set to 0.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">mpm.prob_hi</span></code></p></td>
+<td><p>real[]</p></td>
+<td><p><strong>required</strong></p></td>
+<td><p>Upper corner of the computational domain (m).</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">mpm.ncells</span></code></p></td>
+<td><p>int[]</p></td>
+<td><p><strong>required</strong></p></td>
+<td><p>Number of background grid cells per direction. Unused dimensions set to 0.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">mpm.max_grid_size</span></code></p></td>
+<td><p>int</p></td>
+<td><p>8</p></td>
+<td><p>Maximum AMReX box size. Must be greater than 1.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">mpm.is_it_periodic</span></code></p></td>
+<td><p>int[]</p></td>
+<td><p><strong>required</strong></p></td>
+<td><p>Periodicity flag per direction: <code class="docutils literal notranslate"><span class="pre">1</span></code> = periodic, <code class="docutils literal notranslate"><span class="pre">0</span></code> = non-periodic.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="mpm-namespace-time-control">
+<h2><code class="docutils literal notranslate"><span class="pre">mpm.</span></code> namespace — Time Control<a class="headerlink" href="#mpm-namespace-time-control" title="Link to this heading"></a></h2>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 32.0%" />
+<col style="width: 10.0%" />
+<col style="width: 15.0%" />
+<col style="width: 43.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Default</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">mpm.final_time</span></code></p></td>
+<td><p>real</p></td>
+<td><p><strong>required</strong></p></td>
+<td><p>Simulation end time (s).</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">mpm.max_steps</span></code></p></td>
+<td><p>int</p></td>
+<td><p><strong>required</strong></p></td>
+<td><p>Maximum number of time steps. The run stops at whichever limit is reached first.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">mpm.fixed_timestep</span></code></p></td>
+<td><p>int</p></td>
+<td><p>0</p></td>
+<td><p>If <code class="docutils literal notranslate"><span class="pre">1</span></code>, use a fixed time step supplied via <code class="docutils literal notranslate"><span class="pre">mpm.timestep</span></code> instead of the CFL-adaptive step.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">mpm.timestep</span></code></p></td>
+<td><p>real</p></td>
+<td><p>—</p></td>
+<td><p>Fixed time step size (s). Required when <code class="docutils literal notranslate"><span class="pre">fixed_timestep</span> <span class="pre">=</span> <span class="pre">1</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">mpm.CFL</span></code></p></td>
+<td><p>real</p></td>
+<td><p>0.1</p></td>
+<td><p>CFL number for adaptive time stepping. Ignored when <code class="docutils literal notranslate"><span class="pre">fixed_timestep</span> <span class="pre">=</span> <span class="pre">1</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">mpm.dt_min_limit</span></code></p></td>
+<td><p>real</p></td>
+<td><p>1e-12</p></td>
+<td><p>Minimum allowable adaptive time step (s). ExaGOOP aborts if the step falls below this.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">mpm.dt_max_limit</span></code></p></td>
+<td><p>real</p></td>
+<td><p>1.0</p></td>
+<td><p>Maximum allowable adaptive time step (s).</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="mpm-namespace-physics">
+<h2><code class="docutils literal notranslate"><span class="pre">mpm.</span></code> namespace — Physics<a class="headerlink" href="#mpm-namespace-physics" title="Link to this heading"></a></h2>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 32.0%" />
+<col style="width: 10.0%" />
+<col style="width: 15.0%" />
+<col style="width: 43.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Default</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">mpm.gravity</span></code></p></td>
+<td><p>real[]</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">0.0</span> <span class="pre">-9.81</span> <span class="pre">0.0</span></code></p></td>
+<td><p>Gravitational acceleration vector (m/s²).</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">mpm.alpha_pic_flip</span></code></p></td>
+<td><p>real</p></td>
+<td><p>0.95</p></td>
+<td><p>PIC/FLIP blending factor. <code class="docutils literal notranslate"><span class="pre">0.0</span></code> = pure PIC (maximum dissipation), <code class="docutils literal notranslate"><span class="pre">1.0</span></code> = pure FLIP (minimum dissipation).</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">mpm.order_scheme</span></code></p></td>
+<td><p>int</p></td>
+<td><p>1</p></td>
+<td><p>Shape function order: <code class="docutils literal notranslate"><span class="pre">1</span></code> = bilinear, <code class="docutils literal notranslate"><span class="pre">2</span></code> = quadratic B-spline, <code class="docutils literal notranslate"><span class="pre">3</span></code> = cubic B-spline.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">mpm.stress_update_scheme</span></code></p></td>
+<td><p>string</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">USL</span></code></p></td>
+<td><p>Stress update scheme: <code class="docutils literal notranslate"><span class="pre">USL</span></code> (Update Stress Last) or <code class="docutils literal notranslate"><span class="pre">MUSL</span></code> (Modified USL).</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">mpm.calculate_strain_based_on_delta</span></code></p></td>
+<td><p>int</p></td>
+<td><p>0</p></td>
+<td><p>If <code class="docutils literal notranslate"><span class="pre">1</span></code>, compute strain from incremental displacement rather than velocity gradient.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">mpm.mass_tolerance</span></code></p></td>
+<td><p>real</p></td>
+<td><p>1e-8</p></td>
+<td><p>Grid nodes whose lumped mass falls below this threshold are excluded from the nodal velocity update.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">mpm.applied_strainrate</span></code></p></td>
+<td><p>real</p></td>
+<td><p>0.0</p></td>
+<td><p>Uniform applied strain rate (1/s). Applied to the entire domain.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">mpm.applied_strainrate_time</span></code></p></td>
+<td><p>real</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">final_time</span></code></p></td>
+<td><p>Duration over which the applied strain rate is active (s).</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">mpm.external_loads</span></code></p></td>
+<td><p>int</p></td>
+<td><p>0</p></td>
+<td><p>If <code class="docutils literal notranslate"><span class="pre">1</span></code>, apply a uniform body force to the slab region defined below.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">mpm.force_slab_lo</span></code></p></td>
+<td><p>real[]</p></td>
+<td><p>—</p></td>
+<td><p>Lower corner of the force slab (m). Required when <code class="docutils literal notranslate"><span class="pre">external_loads</span> <span class="pre">=</span> <span class="pre">1</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">mpm.force_slab_hi</span></code></p></td>
+<td><p>real[]</p></td>
+<td><p>—</p></td>
+<td><p>Upper corner of the force slab (m). Required when <code class="docutils literal notranslate"><span class="pre">external_loads</span> <span class="pre">=</span> <span class="pre">1</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">mpm.extforce</span></code></p></td>
+<td><p>real[]</p></td>
+<td><p>—</p></td>
+<td><p>Force per unit volume applied within the slab (N/m³). Required when <code class="docutils literal notranslate"><span class="pre">external_loads</span> <span class="pre">=</span> <span class="pre">1</span></code>.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="mpm-namespace-material-points">
+<h2><code class="docutils literal notranslate"><span class="pre">mpm.</span></code> namespace — Material Points<a class="headerlink" href="#mpm-namespace-material-points" title="Link to this heading"></a></h2>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 32.0%" />
+<col style="width: 10.0%" />
+<col style="width: 15.0%" />
+<col style="width: 43.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Default</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">mpm.particle_file</span></code></p></td>
+<td><p>string</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">mpm_particles.dat</span></code></p></td>
+<td><p>Path to the particle input file. Used when <code class="docutils literal notranslate"><span class="pre">use_autogen</span> <span class="pre">=</span> <span class="pre">0</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">mpm.num_redist</span></code></p></td>
+<td><p>int</p></td>
+<td><p>10</p></td>
+<td><p>Redistribute particles across MPI ranks every N time steps.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">mpm.use_autogen</span></code></p></td>
+<td><p>int</p></td>
+<td><p>0</p></td>
+<td><p>If <code class="docutils literal notranslate"><span class="pre">1</span></code>, generate particles internally from the autogen parameters below instead of reading a file.</p></td>
+</tr>
+</tbody>
+</table>
+<p>When <code class="docutils literal notranslate"><span class="pre">use_autogen</span> <span class="pre">=</span> <span class="pre">1</span></code>, the following parameters define the particle block:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 32.0%" />
+<col style="width: 10.0%" />
+<col style="width: 15.0%" />
+<col style="width: 43.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Default</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">mpm.mincoords_autogen</span></code></p></td>
+<td><p>real[]</p></td>
+<td><p><strong>required</strong></p></td>
+<td><p>Lower corner of the autogen particle block (m).</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">mpm.maxcoords_autogen</span></code></p></td>
+<td><p>real[]</p></td>
+<td><p><strong>required</strong></p></td>
+<td><p>Upper corner of the autogen particle block (m).</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">mpm.vel_autogen</span></code></p></td>
+<td><p>real[]</p></td>
+<td><p><strong>required</strong></p></td>
+<td><p>Initial velocity for all autogen particles (m/s).</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">mpm.ppc</span></code></p></td>
+<td><p>int[]</p></td>
+<td><p>—</p></td>
+<td><p>Particles per cell per direction, e.g. <code class="docutils literal notranslate"><span class="pre">2</span> <span class="pre">2</span> <span class="pre">2</span></code> for eight particles per cell in 3-D.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">mpm.multi_part_per_cell_autogen</span></code></p></td>
+<td><p>int</p></td>
+<td><p>1</p></td>
+<td><p>If <code class="docutils literal notranslate"><span class="pre">1</span></code>, place multiple particles per cell (uses <code class="docutils literal notranslate"><span class="pre">ppc</span></code>); if <code class="docutils literal notranslate"><span class="pre">0</span></code>, one particle per cell.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">mpm.constmodel_autogen</span></code></p></td>
+<td><p>int</p></td>
+<td><p>1</p></td>
+<td><p>Constitutive model ID: <code class="docutils literal notranslate"><span class="pre">0</span></code> = linear elastic, <code class="docutils literal notranslate"><span class="pre">1</span></code> = compressible fluid.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">mpm.dens_autogen</span></code></p></td>
+<td><p>real</p></td>
+<td><p>1000.0</p></td>
+<td><p>Density of autogen particles (kg/m³).</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">mpm.E_autogen</span></code></p></td>
+<td><p>real</p></td>
+<td><p>1e9</p></td>
+<td><p>Young’s modulus for elastic model (Pa).</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">mpm.nu_autogen</span></code></p></td>
+<td><p>real</p></td>
+<td><p>0.1</p></td>
+<td><p>Poisson’s ratio for elastic model (–).</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">mpm.bulkmod_autogen</span></code></p></td>
+<td><p>real</p></td>
+<td><p>0.0</p></td>
+<td><p>Bulk modulus for fluid model (Pa).</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">mpm.Gama_pres_autogen</span></code></p></td>
+<td><p>real</p></td>
+<td><p>1.4</p></td>
+<td><p>Pressure ratio <span class="math notranslate nohighlight">\(\Gamma\)</span> for the fluid equation of state (–).</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">mpm.visc_autogen</span></code></p></td>
+<td><p>real</p></td>
+<td><p>0.001</p></td>
+<td><p>Dynamic viscosity for fluid model (Pa·s).</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">mpm.T_autogen</span></code></p></td>
+<td><p>real</p></td>
+<td><p>0.0</p></td>
+<td><p>Initial temperature of autogen particles (K). <code class="docutils literal notranslate"><span class="pre">USE_TEMP</span></code> only.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">mpm.cp_autogen</span></code></p></td>
+<td><p>real</p></td>
+<td><p>1.0</p></td>
+<td><p>Specific heat capacity (J/(kg·K)). <code class="docutils literal notranslate"><span class="pre">USE_TEMP</span></code> only.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">mpm.thermcond_autogen</span></code></p></td>
+<td><p>real</p></td>
+<td><p>1.0</p></td>
+<td><p>Thermal conductivity (W/(m·K)). <code class="docutils literal notranslate"><span class="pre">USE_TEMP</span></code> only.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">mpm.heatsrc_autogen</span></code></p></td>
+<td><p>real</p></td>
+<td><p>0.0</p></td>
+<td><p>Volumetric internal heat source (W/m³). <code class="docutils literal notranslate"><span class="pre">USE_TEMP</span></code> only.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="mpm-namespace-output">
+<h2><code class="docutils literal notranslate"><span class="pre">mpm.</span></code> namespace — Output<a class="headerlink" href="#mpm-namespace-output" title="Link to this heading"></a></h2>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 32.0%" />
+<col style="width: 10.0%" />
+<col style="width: 15.0%" />
+<col style="width: 43.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Default</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">mpm.write_output_time</span></code></p></td>
+<td><p>real</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">final_time</span> <span class="pre">/</span> <span class="pre">10</span></code></p></td>
+<td><p>Interval between solution snapshots (s).</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">mpm.screen_output_time</span></code></p></td>
+<td><p>real</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">write_output_time</span> <span class="pre">/</span> <span class="pre">10</span></code></p></td>
+<td><p>Interval between screen (terminal) output lines (s).</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">mpm.prefix_particlefilename</span></code></p></td>
+<td><p>string</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">plt</span></code></p></td>
+<td><p>Directory/file prefix for particle output plotfiles (<code class="docutils literal notranslate"><span class="pre">plt*</span></code>).</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">mpm.prefix_gridfilename</span></code></p></td>
+<td><p>string</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">plt</span></code></p></td>
+<td><p>Directory/file prefix for nodal grid output plotfiles (<code class="docutils literal notranslate"><span class="pre">nplt*</span></code>).</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">mpm.prefix_densityfilename</span></code></p></td>
+<td><p>string</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">plt</span></code></p></td>
+<td><p>Directory/file prefix for density output plotfiles.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">mpm.prefix_checkpointfilename</span></code></p></td>
+<td><p>string</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">chk</span></code></p></td>
+<td><p>Directory/file prefix for checkpoint files used to restart a run.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">mpm.prefix_asciifilename</span></code></p></td>
+<td><p>string</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">matpnt</span></code></p></td>
+<td><p>Directory/file prefix for ASCII material point output files.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">mpm.diagnostic_output_folder</span></code></p></td>
+<td><p>string</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">./Diagnostics/</span></code></p></td>
+<td><p>Directory for diagnostic output files.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">mpm.num_of_digits_in_filenames</span></code></p></td>
+<td><p>int</p></td>
+<td><p>6</p></td>
+<td><p>Number of zero-padded digits in output file step indices.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">mpm.write_ascii</span></code></p></td>
+<td><p>int</p></td>
+<td><p>0</p></td>
+<td><p>If <code class="docutils literal notranslate"><span class="pre">1</span></code>, write ASCII material point files alongside the plotfiles.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="mpm-namespace-diagnostics">
+<h2><code class="docutils literal notranslate"><span class="pre">mpm.</span></code> namespace — Diagnostics<a class="headerlink" href="#mpm-namespace-diagnostics" title="Link to this heading"></a></h2>
+<p>Diagnostics are activated by setting <code class="docutils literal notranslate"><span class="pre">mpm.print_diagnostics</span> <span class="pre">=</span> <span class="pre">1</span></code>.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 36.0%" />
+<col style="width: 10.0%" />
+<col style="width: 12.0%" />
+<col style="width: 42.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Default</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">mpm.print_diagnostics</span></code></p></td>
+<td><p>int</p></td>
+<td><p>0</p></td>
+<td><p>Master switch: set to <code class="docutils literal notranslate"><span class="pre">1</span></code> to enable all diagnostic output.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">mpm.do_calculate_tke_tse</span></code></p></td>
+<td><p>int</p></td>
+<td><p>0</p></td>
+<td><p>If <code class="docutils literal notranslate"><span class="pre">1</span></code>, compute and write total kinetic and strain energies.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">mpm.do_calculate_mwa_velcomp</span></code></p></td>
+<td><p>int</p></td>
+<td><p>0</p></td>
+<td><p>If <code class="docutils literal notranslate"><span class="pre">1</span></code>, compute and write mass-weighted average velocity components.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">mpm.do_calculate_mwa_velmag</span></code></p></td>
+<td><p>int</p></td>
+<td><p>0</p></td>
+<td><p>If <code class="docutils literal notranslate"><span class="pre">1</span></code>, compute and write mass-weighted average velocity magnitude.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">mpm.do_calculate_minmaxpos</span></code></p></td>
+<td><p>int</p></td>
+<td><p>0</p></td>
+<td><p>If <code class="docutils literal notranslate"><span class="pre">1</span></code>, compute and write the minimum and maximum particle positions.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">mpm.write_diag_output_time</span></code></p></td>
+<td><p>real</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">write_output_time</span></code></p></td>
+<td><p>Interval between diagnostic output writes (s).</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="mpm-namespace-level-set-output">
+<h2><code class="docutils literal notranslate"><span class="pre">mpm.</span></code> namespace — Level-Set Output<a class="headerlink" href="#mpm-namespace-level-set-output" title="Link to this heading"></a></h2>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 32.0%" />
+<col style="width: 10.0%" />
+<col style="width: 15.0%" />
+<col style="width: 43.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Default</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">mpm.levset_output</span></code></p></td>
+<td><p>int</p></td>
+<td><p>0</p></td>
+<td><p>If <code class="docutils literal notranslate"><span class="pre">1</span></code>, write level-set field plotfiles for visualisation.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">mpm.levset_smoothfactor</span></code></p></td>
+<td><p>real</p></td>
+<td><p>1.0</p></td>
+<td><p>Smoothing factor applied to the level-set signed-distance field.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">mpm.levset_gridratio</span></code></p></td>
+<td><p>int</p></td>
+<td><p>1</p></td>
+<td><p>Refinement ratio for the level-set grid relative to the background grid.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="mpm-namespace-momentum-boundary-conditions">
+<h2><code class="docutils literal notranslate"><span class="pre">mpm.</span></code> namespace — Momentum Boundary Conditions<a class="headerlink" href="#mpm-namespace-momentum-boundary-conditions" title="Link to this heading"></a></h2>
+<p>Momentum BCs are specified per face. Valid face identifiers are <code class="docutils literal notranslate"><span class="pre">xlo</span></code>,
+<code class="docutils literal notranslate"><span class="pre">xhi</span></code>, <code class="docutils literal notranslate"><span class="pre">ylo</span></code>, <code class="docutils literal notranslate"><span class="pre">yhi</span></code>, <code class="docutils literal notranslate"><span class="pre">zlo</span></code>, <code class="docutils literal notranslate"><span class="pre">zhi</span></code>.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>mpm.bc_&lt;face&gt;_mom  =  &lt;type&gt;
+</pre></div>
+</div>
+<p>Valid <code class="docutils literal notranslate"><span class="pre">&lt;type&gt;</span></code> values:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 75.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Value</p></th>
+<th class="head"><p>Behaviour</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">slip</span></code></p></td>
+<td><p>Slip wall (default): zero normal velocity, unconstrained tangential velocity.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">noslip</span></code></p></td>
+<td><p>No-slip wall: all velocity components set to zero (or the prescribed wall velocity).</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">partialslip</span></code></p></td>
+<td><p>Partial-slip wall: tangential velocity damped by friction coefficient <code class="docutils literal notranslate"><span class="pre">wall_mu</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">outflow</span></code></p></td>
+<td><p>Outflow: material points exiting through this face are removed.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">periodic</span></code></p></td>
+<td><p>Periodic. Must be matched with the opposite face and <code class="docutils literal notranslate"><span class="pre">mpm.is_it_periodic</span> <span class="pre">=</span> <span class="pre">1</span></code> in that direction.</p></td>
+</tr>
+</tbody>
+</table>
+<p>Additional sub-parameters for <code class="docutils literal notranslate"><span class="pre">mpm.bc_&lt;face&gt;_mom</span></code>:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 36.0%" />
+<col style="width: 10.0%" />
+<col style="width: 12.0%" />
+<col style="width: 42.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Default</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">mpm.bc_&lt;face&gt;_mom.wall_vel</span></code></p></td>
+<td><p>real[]</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">0</span> <span class="pre">0</span> <span class="pre">0</span></code></p></td>
+<td><p>Prescribed constant wall velocity (m/s) for <code class="docutils literal notranslate"><span class="pre">noslip</span></code> or <code class="docutils literal notranslate"><span class="pre">partialslip</span></code> walls.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">mpm.bc_&lt;face&gt;_mom.wall_mu</span></code></p></td>
+<td><p>real</p></td>
+<td><p>0.0</p></td>
+<td><p>Friction coefficient for <code class="docutils literal notranslate"><span class="pre">partialslip</span></code> walls (–).</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">mpm.bc_&lt;face&gt;_mom.udf_lib</span></code></p></td>
+<td><p>string</p></td>
+<td><p>—</p></td>
+<td><p>Path to the shared library implementing a UDF velocity profile. Both <code class="docutils literal notranslate"><span class="pre">udf_lib</span></code> and <code class="docutils literal notranslate"><span class="pre">udf_func</span></code> must be supplied together.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">mpm.bc_&lt;face&gt;_mom.udf_func</span></code></p></td>
+<td><p>string</p></td>
+<td><p>—</p></td>
+<td><p>Name of the C-linkage function exported by the UDF shared library. See <a class="reference internal" href="udf_moving_wall.html#udf-moving-wall"><span class="std std-ref">UDF Moving Wall Boundary Conditions</span></a> for the required function signature.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="mpm-namespace-temperature-boundary-conditions-use-temp-only">
+<h2><code class="docutils literal notranslate"><span class="pre">mpm.</span></code> namespace — Temperature Boundary Conditions (<code class="docutils literal notranslate"><span class="pre">USE_TEMP</span></code> only)<a class="headerlink" href="#mpm-namespace-temperature-boundary-conditions-use-temp-only" title="Link to this heading"></a></h2>
+<p>Temperature BCs follow the same per-face pattern as momentum BCs.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>mpm.bc_&lt;face&gt;_temp  =  &lt;type&gt;
+</pre></div>
+</div>
+<p>Valid <code class="docutils literal notranslate"><span class="pre">&lt;type&gt;</span></code> values:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 80.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Value</p></th>
+<th class="head"><p>Behaviour</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">adiabatic</span></code></p></td>
+<td><p>Adiabatic (default): zero heat flux through the face.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">dirichlet</span></code></p></td>
+<td><p>Fixed wall temperature. Requires <code class="docutils literal notranslate"><span class="pre">T_wall</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">heatflux</span></code></p></td>
+<td><p>Prescribed heat flux. Requires <code class="docutils literal notranslate"><span class="pre">flux</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">convective</span></code></p></td>
+<td><p>Newton cooling law: <span class="math notranslate nohighlight">\(q = h (T_\text{wall} - T_\infty)\)</span>. Requires <code class="docutils literal notranslate"><span class="pre">h</span></code> and <code class="docutils literal notranslate"><span class="pre">T_inf</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">periodic</span></code></p></td>
+<td><p>Periodic (must be paired with <code class="docutils literal notranslate"><span class="pre">mpm.is_it_periodic</span> <span class="pre">=</span> <span class="pre">1</span></code> in that direction).</p></td>
+</tr>
+</tbody>
+</table>
+<p>Additional sub-parameters for <code class="docutils literal notranslate"><span class="pre">mpm.bc_&lt;face&gt;_temp</span></code>:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 36.0%" />
+<col style="width: 10.0%" />
+<col style="width: 12.0%" />
+<col style="width: 42.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Default</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">mpm.bc_&lt;face&gt;_temp.T_wall</span></code></p></td>
+<td><p>real</p></td>
+<td><p>0.0</p></td>
+<td><p>Wall temperature for <code class="docutils literal notranslate"><span class="pre">dirichlet</span></code> BC (K).</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">mpm.bc_&lt;face&gt;_temp.flux</span></code></p></td>
+<td><p>real</p></td>
+<td><p>0.0</p></td>
+<td><p>Prescribed heat flux for <code class="docutils literal notranslate"><span class="pre">heatflux</span></code> BC (W/m²). Positive flux into the domain.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">mpm.bc_&lt;face&gt;_temp.h</span></code></p></td>
+<td><p>real</p></td>
+<td><p>0.0</p></td>
+<td><p>Convective heat transfer coefficient for <code class="docutils literal notranslate"><span class="pre">convective</span></code> BC (W/(m²·K)).</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">mpm.bc_&lt;face&gt;_temp.T_inf</span></code></p></td>
+<td><p>real</p></td>
+<td><p>0.0</p></td>
+<td><p>Ambient temperature for <code class="docutils literal notranslate"><span class="pre">convective</span></code> BC (K).</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">mpm.bc_&lt;face&gt;_temp.udf_lib</span></code></p></td>
+<td><p>string</p></td>
+<td><p>—</p></td>
+<td><p>Path to a UDF shared library for a custom temperature profile.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">mpm.bc_&lt;face&gt;_temp.udf_func</span></code></p></td>
+<td><p>string</p></td>
+<td><p>—</p></td>
+<td><p>Function name in the UDF temperature shared library.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="amr-namespace-restart">
+<h2><code class="docutils literal notranslate"><span class="pre">amr.</span></code> namespace — Restart<a class="headerlink" href="#amr-namespace-restart" title="Link to this heading"></a></h2>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 32.0%" />
+<col style="width: 10.0%" />
+<col style="width: 15.0%" />
+<col style="width: 43.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Default</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">amr.restart_checkfile</span></code></p></td>
+<td><p>string</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">&quot;&quot;</span></code></p></td>
+<td><p>Path to a checkpoint directory to restart the simulation from. Leave empty for a fresh start.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="eb2-namespace-embedded-boundaries-use-eb-only">
+<h2><code class="docutils literal notranslate"><span class="pre">eb2.</span></code> namespace — Embedded Boundaries (<code class="docutils literal notranslate"><span class="pre">USE_EB</span></code> only)<a class="headerlink" href="#eb2-namespace-embedded-boundaries-use-eb-only" title="Link to this heading"></a></h2>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 32.0%" />
+<col style="width: 10.0%" />
+<col style="width: 15.0%" />
+<col style="width: 43.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Default</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">eb2.body_names</span></code></p></td>
+<td><p>string[]</p></td>
+<td><p>—</p></td>
+<td><p>Space-separated list of body names. Each name becomes the ParmParse namespace for that body’s parameters. If omitted, ExaGOOP falls back to legacy single-body mode reading from the <code class="docutils literal notranslate"><span class="pre">eb2.</span></code> namespace directly.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="per-body-namespace-body-name-use-eb-only">
+<h2>Per-body namespace <code class="docutils literal notranslate"><span class="pre">&lt;body_name&gt;.</span></code> (<code class="docutils literal notranslate"><span class="pre">USE_EB</span></code> only)<a class="headerlink" href="#per-body-namespace-body-name-use-eb-only" title="Link to this heading"></a></h2>
+<p>Replace <code class="docutils literal notranslate"><span class="pre">&lt;body_name&gt;</span></code> with the name listed in <code class="docutils literal notranslate"><span class="pre">eb2.body_names</span></code>.</p>
+<p><strong>Common parameters (all geometry types):</strong></p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 32.0%" />
+<col style="width: 10.0%" />
+<col style="width: 15.0%" />
+<col style="width: 43.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Default</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">&lt;name&gt;.geom_type</span></code></p></td>
+<td><p>string</p></td>
+<td><p><strong>required</strong></p></td>
+<td><p>Shape type: <code class="docutils literal notranslate"><span class="pre">sphere</span></code>, <code class="docutils literal notranslate"><span class="pre">plane</span></code>, <code class="docutils literal notranslate"><span class="pre">cylinder</span></code>, <code class="docutils literal notranslate"><span class="pre">box</span></code>, <code class="docutils literal notranslate"><span class="pre">stl</span></code>, <code class="docutils literal notranslate"><span class="pre">udf_cpp</span></code>, <code class="docutils literal notranslate"><span class="pre">wedge_hopper</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">&lt;name&gt;.ls_refinement</span></code></p></td>
+<td><p>int</p></td>
+<td><p>1</p></td>
+<td><p>Level-set grid refinement ratio relative to the background grid. Higher values improve surface accuracy.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">&lt;name&gt;.levelset_mom</span></code></p></td>
+<td><p>string</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">noslipwall</span></code></p></td>
+<td><p>Momentum BC on the body surface: <code class="docutils literal notranslate"><span class="pre">noslipwall</span></code>, <code class="docutils literal notranslate"><span class="pre">slipwall</span></code>, or <code class="docutils literal notranslate"><span class="pre">partialslip</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">&lt;name&gt;.lset_wall_mu</span></code></p></td>
+<td><p>real</p></td>
+<td><p>0.0</p></td>
+<td><p>Friction coefficient for <code class="docutils literal notranslate"><span class="pre">partialslip</span></code> body surfaces (–).</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">&lt;name&gt;.lset_wall_vel</span></code></p></td>
+<td><p>real[]</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">0</span> <span class="pre">0</span> <span class="pre">0</span></code></p></td>
+<td><p>Constant wall velocity imposed on the body surface (m/s).</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">&lt;name&gt;.temp_bc_type</span></code></p></td>
+<td><p>string</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">adiabatic</span></code></p></td>
+<td><p>Temperature BC on the body surface: <code class="docutils literal notranslate"><span class="pre">isothermal</span></code>, <code class="docutils literal notranslate"><span class="pre">adiabatic</span></code>, <code class="docutils literal notranslate"><span class="pre">heatflux</span></code>, <code class="docutils literal notranslate"><span class="pre">convective</span></code>. <code class="docutils literal notranslate"><span class="pre">USE_TEMP</span></code> only.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">&lt;name&gt;.lset_T_wall</span></code></p></td>
+<td><p>real</p></td>
+<td><p>0.0</p></td>
+<td><p>Isothermal wall temperature (K). <code class="docutils literal notranslate"><span class="pre">USE_TEMP</span></code> only.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">&lt;name&gt;.lset_heat_flux</span></code></p></td>
+<td><p>real</p></td>
+<td><p>0.0</p></td>
+<td><p>Heat flux through the body surface (W/m²). <code class="docutils literal notranslate"><span class="pre">USE_TEMP</span></code> only.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">&lt;name&gt;.lset_h_conv</span></code></p></td>
+<td><p>real</p></td>
+<td><p>0.0</p></td>
+<td><p>Convective heat transfer coefficient (W/(m²·K)). <code class="docutils literal notranslate"><span class="pre">USE_TEMP</span></code> only.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">&lt;name&gt;.lset_T_inf</span></code></p></td>
+<td><p>real</p></td>
+<td><p>0.0</p></td>
+<td><p>Ambient temperature for convective BC (K). <code class="docutils literal notranslate"><span class="pre">USE_TEMP</span></code> only.</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Sphere</strong> (<code class="docutils literal notranslate"><span class="pre">geom_type</span> <span class="pre">=</span> <span class="pre">sphere</span></code>):</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 32.0%" />
+<col style="width: 10.0%" />
+<col style="width: 15.0%" />
+<col style="width: 43.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Default</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">&lt;name&gt;.sphere_radius</span></code></p></td>
+<td><p>real</p></td>
+<td><p><strong>required</strong></p></td>
+<td><p>Sphere radius (m).</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">&lt;name&gt;.sphere_center</span></code></p></td>
+<td><p>real[]</p></td>
+<td><p><strong>required</strong></p></td>
+<td><p>Centre coordinates (m).</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">&lt;name&gt;.sphere_has_fluid_inside</span></code></p></td>
+<td><p>bool</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p></td>
+<td><p>If <code class="docutils literal notranslate"><span class="pre">true</span></code>, fluid occupies the interior of the sphere; the solid body is outside.</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Plane</strong> (<code class="docutils literal notranslate"><span class="pre">geom_type</span> <span class="pre">=</span> <span class="pre">plane</span></code>):</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 32.0%" />
+<col style="width: 10.0%" />
+<col style="width: 15.0%" />
+<col style="width: 43.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Default</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">&lt;name&gt;.plane_point</span></code></p></td>
+<td><p>real[]</p></td>
+<td><p><strong>required</strong></p></td>
+<td><p>A point on the plane (m).</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">&lt;name&gt;.plane_normal</span></code></p></td>
+<td><p>real[]</p></td>
+<td><p><strong>required</strong></p></td>
+<td><p>Outward normal vector pointing into the fluid domain.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">&lt;name&gt;.plane_has_fluid_inside</span></code></p></td>
+<td><p>bool</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p></td>
+<td><p>Orientation flag. See <code class="docutils literal notranslate"><span class="pre">sphere_has_fluid_inside</span></code>.</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Cylinder</strong> (<code class="docutils literal notranslate"><span class="pre">geom_type</span> <span class="pre">=</span> <span class="pre">cylinder</span></code>):</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 32.0%" />
+<col style="width: 10.0%" />
+<col style="width: 15.0%" />
+<col style="width: 43.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Default</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">&lt;name&gt;.cylinder_radius</span></code></p></td>
+<td><p>real</p></td>
+<td><p><strong>required</strong></p></td>
+<td><p>Cylinder radius (m).</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">&lt;name&gt;.cylinder_center</span></code></p></td>
+<td><p>real[]</p></td>
+<td><p><strong>required</strong></p></td>
+<td><p>Axis centre coordinates (m).</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">&lt;name&gt;.cylinder_height</span></code></p></td>
+<td><p>real</p></td>
+<td><p>1.0</p></td>
+<td><p>Cylinder height along the axis direction (m).</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">&lt;name&gt;.cylinder_direction</span></code></p></td>
+<td><p>int</p></td>
+<td><p>2</p></td>
+<td><p>Axis direction: <code class="docutils literal notranslate"><span class="pre">0</span></code> = x, <code class="docutils literal notranslate"><span class="pre">1</span></code> = y, <code class="docutils literal notranslate"><span class="pre">2</span></code> = z.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">&lt;name&gt;.cylinder_has_fluid_inside</span></code></p></td>
+<td><p>bool</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p></td>
+<td><p>Orientation flag.</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Box</strong> (<code class="docutils literal notranslate"><span class="pre">geom_type</span> <span class="pre">=</span> <span class="pre">box</span></code>):</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 32.0%" />
+<col style="width: 10.0%" />
+<col style="width: 15.0%" />
+<col style="width: 43.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Default</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">&lt;name&gt;.box_lo</span></code></p></td>
+<td><p>real[]</p></td>
+<td><p><strong>required</strong></p></td>
+<td><p>Lower corner of the box (m).</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">&lt;name&gt;.box_hi</span></code></p></td>
+<td><p>real[]</p></td>
+<td><p><strong>required</strong></p></td>
+<td><p>Upper corner of the box (m).</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">&lt;name&gt;.box_has_fluid_inside</span></code></p></td>
+<td><p>bool</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p></td>
+<td><p>Orientation flag.</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>STL geometry</strong> (<code class="docutils literal notranslate"><span class="pre">geom_type</span> <span class="pre">=</span> <span class="pre">stl</span></code>):</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 32.0%" />
+<col style="width: 10.0%" />
+<col style="width: 15.0%" />
+<col style="width: 43.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Default</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">&lt;name&gt;.stl_file</span></code></p></td>
+<td><p>string</p></td>
+<td><p><strong>required</strong></p></td>
+<td><p>Path to an STL surface mesh file describing the body geometry.</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>UDF implicit function</strong> (<code class="docutils literal notranslate"><span class="pre">geom_type</span> <span class="pre">=</span> <span class="pre">udf_cpp</span></code>):</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 32.0%" />
+<col style="width: 10.0%" />
+<col style="width: 15.0%" />
+<col style="width: 43.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Default</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">&lt;name&gt;.udf_so_file</span></code></p></td>
+<td><p>string</p></td>
+<td><p><strong>required</strong></p></td>
+<td><p>Path to a shared library exporting a signed-distance function for the body surface.</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Wedge hopper</strong> (<code class="docutils literal notranslate"><span class="pre">geom_type</span> <span class="pre">=</span> <span class="pre">wedge_hopper</span></code>, 3-D only):</p>
+<p>Parameters are read from the <code class="docutils literal notranslate"><span class="pre">wedge_hopper.</span></code> namespace rather than the body namespace:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 32.0%" />
+<col style="width: 10.0%" />
+<col style="width: 15.0%" />
+<col style="width: 43.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Default</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">wedge_hopper.exit_size</span></code></p></td>
+<td><p>real</p></td>
+<td><p><strong>required</strong></p></td>
+<td><p>Width of the hopper exit opening (m).</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">wedge_hopper.bin_size</span></code></p></td>
+<td><p>real</p></td>
+<td><p><strong>required</strong></p></td>
+<td><p>Width of the hopper bin above the funnel (m).</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">wedge_hopper.funnel_height</span></code></p></td>
+<td><p>real</p></td>
+<td><p><strong>required</strong></p></td>
+<td><p>Height of the converging funnel section (m).</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">wedge_hopper.vertical_offset</span></code></p></td>
+<td><p>real</p></td>
+<td><p>domain centre</p></td>
+<td><p>Vertical position of the hopper centre (m).</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="minimal-working-example">
+<h2>Minimal Working Example<a class="headerlink" href="#minimal-working-example" title="Link to this heading"></a></h2>
+<p>The following input file runs a 1-D elastic bar vibration with 30 cells,
+no gravity, and fixed boundary conditions at both ends:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>#------------------------------
+# Domain
+#------------------------------
+mpm.prob_lo        = 0.0 0.0 0.0
+mpm.prob_hi        = 30.0 0.0 0.0
+mpm.ncells         = 30 0 0
+mpm.max_grid_size  = 16
+mpm.is_it_periodic = 0
+
+#------------------------------
+# Time control
+#------------------------------
+mpm.final_time  = 50.0
+mpm.max_steps   = 5000000
+mpm.CFL         = 0.1
+
+#------------------------------
+# Material points
+#------------------------------
+mpm.particle_file = mpm_particles.dat
+
+#------------------------------
+# Output
+#------------------------------
+mpm.write_output_time  = 0.5
+mpm.screen_output_time = 0.001
+mpm.prefix_particlefilename = &quot;results/plt&quot;
+mpm.prefix_gridfilename     = &quot;results/nplt&quot;
+
+#------------------------------
+# Numerics
+#------------------------------
+mpm.order_scheme           = 1
+mpm.alpha_pic_flip         = 1.0
+mpm.stress_update_scheme   = MUSL
+mpm.gravity                = 0.0 0.0 0.0
+
+#------------------------------
+# Boundary conditions
+#------------------------------
+mpm.bc_xlo_mom = noslip
+mpm.bc_xhi_mom = noslip
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="tutorial_heat_cylinder.html" class="btn btn-neutral float-left" title="Tutorial: 2-D Steady Heat Conduction around a Cylinder (Dirichlet)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="physics_modules.html" class="btn btn-neutral float-right" title="Physics Modules" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021-2022, ExaGOOPTeam.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
