@@ -92,6 +92,12 @@
 #define BC_PARTIALSLIPWALL 3
 #define BC_OUTFLOW 4
 
+#define BC_TEMP_PERIODIC 0
+#define BC_TEMP_ISOTHERMAL 1
+#define BC_TEMP_ADIABATIC 2
+#define BC_TEMP_USERFLUX 3
+#define BC_TEMP_CONVECTION 4
+
 #define USL 0
 #define MUSL 1
 

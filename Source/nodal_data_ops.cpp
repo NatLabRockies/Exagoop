@@ -855,14 +855,19 @@ void nodal_bcs_temperature(const amrex::Geometry geom,
                         int bc_type = is_lo ? bclo[d] : bchi[d];
                         int sign = is_lo ? 1 : -1;
 
-                        if (bc_type == 1)
+                        if (bc_type == BC_TEMP_PERIODIC)
+                        {
+                            // Periodic. Do nothing
+                            bc_applied = true;
+                        }
+                        else if (bc_type == BC_TEMP_ISOTHERMAL)
                         {
                             amrex::Real Tw =
                                 is_lo ? T_wall_lo_g[d] : T_wall_hi_g[d];
                             arr(nodeid, TEMPERATURE) = Tw;
                             bc_applied = true;
                         }
-                        else if (bc_type == 2 || bc_type == 0)
+                        else if (bc_type == BC_TEMP_ADIABATIC)
                         {
                             if (!bc_applied)
                             {
@@ -872,7 +877,7 @@ void nodal_bcs_temperature(const amrex::Geometry geom,
                                 bc_applied = true;
                             }
                         }
-                        else if (bc_type == 3)
+                        else if (bc_type == BC_TEMP_USERFLUX)
                         {
                             IntVect nb = nodeid;
                             nb[d] += sign;
@@ -884,7 +889,7 @@ void nodal_bcs_temperature(const amrex::Geometry geom,
                                 arr(nb, TEMPERATURE) + q * dx_g[d] / k_node;
                             bc_applied = true;
                         }
-                        else if (bc_type == 4)
+                        else if (bc_type == BC_TEMP_CONVECTION)
                         {
                             IntVect nb = nodeid;
                             nb[d] += sign;
@@ -1406,11 +1411,11 @@ void apply_udf_nodal_bcs_temperature(const amrex::Geometry &geom,
                     amrex::Real val0 = udf_ptr[flat];
                     amrex::Real val1 = udf_ptr[flat + 1];
 
-                    if (bc_type == 1)
+                    if (bc_type == BC_TEMP_ISOTHERMAL)
                     {
                         arr(nodeid, TEMPERATURE) = val0;
                     }
-                    else if (bc_type == 3)
+                    else if (bc_type == BC_TEMP_USERFLUX)
                     {
                         IntVect nb = nodeid;
                         nb[dir] += sign;
@@ -1420,7 +1425,7 @@ void apply_udf_nodal_bcs_temperature(const amrex::Geometry &geom,
                         arr(nodeid, TEMPERATURE) =
                             arr(nb, TEMPERATURE) + val0 * dx_g[dir] / k_node;
                     }
-                    else if (bc_type == 4)
+                    else if (bc_type == BC_TEMP_CONVECTION)
                     {
                         IntVect nb = nodeid;
                         nb[dir] += sign;

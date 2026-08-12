@@ -1,5 +1,6 @@
 .project
 .pydevproject
+.cproject
 
 .DS_Store
 .clang-format
@@ -34,3 +35,4 @@ Developer_Tools/sweep_results.json
 
 build_matrix_*.json
 build_matrix_*.txt
+clangformat.sh
