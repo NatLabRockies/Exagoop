@@ -1012,17 +1012,19 @@ void MPMParticleContainer::interpolate_from_grid(
                         }
                         else if (order_scheme_directional[dim] == 2)
                         {
-                            quadratic_interp_two(
-                                xp, iv, min_index, max_index, plo, dx,
-                                nodal_data_arr, VELX_INDEX + dim,
-                                DELTA_VELX_INDEX + dim, lo, hi, interp_vals);
+                            quadratic_interp_two(xp, iv, min_index, max_index,
+                                                 plo, dx, nodal_data_arr,
+                                                 VELX_INDEX + dim,
+                                                 DELTA_VELX_INDEX + dim,
+                                                 periodic, lo, hi, interp_vals);
                         }
                         else if (order_scheme_directional[dim] == 3)
                         {
-                            cubic_interp_two(
-                                xp, iv, min_index, max_index, plo, dx,
-                                nodal_data_arr, VELX_INDEX + dim,
-                                DELTA_VELX_INDEX + dim, lo, hi, interp_vals);
+                            cubic_interp_two(xp, iv, min_index, max_index, plo,
+                                             dx, nodal_data_arr,
+                                             VELX_INDEX + dim,
+                                             DELTA_VELX_INDEX + dim, periodic,
+                                             lo, hi, interp_vals);
                         }
 
                         p.rdata(realData::xvel_prime + dim) = interp_vals[0];
@@ -1209,13 +1211,15 @@ void MPMParticleContainer::interpolate_from_grid_temperature(
                     {
                         p.rdata(realData::temperature) += quadratic_interp(
                             xp, iv, min_index, max_index, plo, dx,
-                            nodal_data_arr, DELTA_TEMPERATURE, lo, hi);
+                            nodal_data_arr, DELTA_TEMPERATURE, periodic, lo,
+                            hi);
                     }
                     else if (order_scheme_directional[0] == 3)
                     {
-                        p.rdata(realData::temperature) += cubic_interp(
-                            xp, iv, min_index, max_index, plo, dx,
-                            nodal_data_arr, DELTA_TEMPERATURE, lo, hi);
+                        p.rdata(realData::temperature) +=
+                            cubic_interp(xp, iv, min_index, max_index, plo, dx,
+                                         nodal_data_arr, DELTA_TEMPERATURE,
+                                         periodic, lo, hi);
                     }
                 }
 

@@ -685,6 +685,7 @@ quadratic_interp(amrex::Real xp[AMREX_SPACEDIM],
                  const amrex::GpuArray<amrex::Real, AMREX_SPACEDIM> dx,
                  amrex::Array4<amrex::Real> nodaldata,
                  int comp,
+                 const amrex::GpuArray<int, AMREX_SPACEDIM> &periodic,
                  const int *lo,
                  const int *hi)
 {
@@ -712,7 +713,7 @@ quadratic_interp(amrex::Real xp[AMREX_SPACEDIM],
         else
             shapetypex = 3;
         rx = (xp[XDIR] - (plo[XDIR] + (i + l) * dx[XDIR])) / dx[XDIR];
-        lval = quadraticspline_1d(shapetypex, rx);
+        lval = quadraticspline_1d(periodic[0] ? 3 : shapetypex, rx);
         value += lval * nodaldata(i + l, 0, 0, comp);
     }
 
@@ -757,8 +758,8 @@ quadratic_interp(amrex::Real xp[AMREX_SPACEDIM],
             rx = (xp[XDIR] - (plo[XDIR] + (i + l) * dx[XDIR])) / dx[XDIR];
             ry = (xp[YDIR] - (plo[YDIR] + (j + m) * dx[YDIR])) / dx[YDIR];
 
-            lval = quadraticspline_1d(shapetypex, rx);
-            mval = quadraticspline_1d(shapetypey, ry);
+            lval = quadraticspline_1d(periodic[0] ? 3 : shapetypex, rx);
+            mval = quadraticspline_1d(periodic[1] ? 3 : shapetypey, ry);
 
             value += lval * mval * nodaldata(i + l, j + m, 0, comp);
         }
@@ -824,9 +825,9 @@ quadratic_interp(amrex::Real xp[AMREX_SPACEDIM],
                 ry = (xp[YDIR] - (plo[YDIR] + (j + m) * dx[YDIR])) / dx[YDIR];
                 rz = (xp[ZDIR] - (plo[ZDIR] + (k + n) * dx[ZDIR])) / dx[ZDIR];
 
-                lval = quadraticspline_1d(shapetypex, rx);
-                mval = quadraticspline_1d(shapetypey, ry);
-                nval = quadraticspline_1d(shapetypez, rz);
+                lval = quadraticspline_1d(periodic[0] ? 3 : shapetypex, rx);
+                mval = quadraticspline_1d(periodic[1] ? 3 : shapetypey, ry);
+                nval = quadraticspline_1d(periodic[2] ? 3 : shapetypez, rz);
                 value +=
                     lval * mval * nval * nodaldata(i + l, j + m, k + n, comp);
             }
@@ -869,6 +870,7 @@ quadratic_interp_two(amrex::Real xp[AMREX_SPACEDIM],
                      amrex::Array4<amrex::Real> nodaldata,
                      int comp0,
                      int comp1,
+                     const amrex::GpuArray<int, AMREX_SPACEDIM> &periodic,
                      const int *lo,
                      const int *hi,
                      amrex::Real vals[2])
@@ -893,7 +895,7 @@ quadratic_interp_two(amrex::Real xp[AMREX_SPACEDIM],
             shapetypex = 3;
         amrex::Real rx =
             (xp[XDIR] - (plo[XDIR] + (i + l) * dx[XDIR])) / dx[XDIR];
-        amrex::Real lval = quadraticspline_1d(shapetypex, rx);
+        amrex::Real lval = quadraticspline_1d(periodic[0] ? 3 : shapetypex, rx);
         vals[0] += lval * nodaldata(i + l, 0, 0, comp0);
         vals[1] += lval * nodaldata(i + l, 0, 0, comp1);
     }
@@ -918,7 +920,7 @@ quadratic_interp_two(amrex::Real xp[AMREX_SPACEDIM],
             shapetypey = 3;
         amrex::Real ry =
             (xp[YDIR] - (plo[YDIR] + (j + m) * dx[YDIR])) / dx[YDIR];
-        amrex::Real mval = quadraticspline_1d(shapetypey, ry);
+        amrex::Real mval = quadraticspline_1d(periodic[1] ? 3 : shapetypey, ry);
         for (int l = lmin; l < lmax; l++)
         {
             int shapetypex;
@@ -932,7 +934,8 @@ quadratic_interp_two(amrex::Real xp[AMREX_SPACEDIM],
                 shapetypex = 3;
             amrex::Real rx =
                 (xp[XDIR] - (plo[XDIR] + (i + l) * dx[XDIR])) / dx[XDIR];
-            amrex::Real lval = quadraticspline_1d(shapetypex, rx);
+            amrex::Real lval =
+                quadraticspline_1d(periodic[0] ? 3 : shapetypex, rx);
             amrex::Real weight = lval * mval;
             vals[0] += weight * nodaldata(i + l, j + m, 0, comp0);
             vals[1] += weight * nodaldata(i + l, j + m, 0, comp1);
@@ -962,7 +965,7 @@ quadratic_interp_two(amrex::Real xp[AMREX_SPACEDIM],
             shapetypez = 3;
         amrex::Real rz =
             (xp[ZDIR] - (plo[ZDIR] + (k + n) * dx[ZDIR])) / dx[ZDIR];
-        amrex::Real nval = quadraticspline_1d(shapetypez, rz);
+        amrex::Real nval = quadraticspline_1d(periodic[2] ? 3 : shapetypez, rz);
         for (int m = mmin; m < mmax; m++)
         {
             int shapetypey;
@@ -976,7 +979,8 @@ quadratic_interp_two(amrex::Real xp[AMREX_SPACEDIM],
                 shapetypey = 3;
             amrex::Real ry =
                 (xp[YDIR] - (plo[YDIR] + (j + m) * dx[YDIR])) / dx[YDIR];
-            amrex::Real mval = quadraticspline_1d(shapetypey, ry);
+            amrex::Real mval =
+                quadraticspline_1d(periodic[1] ? 3 : shapetypey, ry);
             for (int l = lmin; l < lmax; l++)
             {
                 int shapetypex;
@@ -990,7 +994,8 @@ quadratic_interp_two(amrex::Real xp[AMREX_SPACEDIM],
                     shapetypex = 3;
                 amrex::Real rx =
                     (xp[XDIR] - (plo[XDIR] + (i + l) * dx[XDIR])) / dx[XDIR];
-                amrex::Real lval = quadraticspline_1d(shapetypex, rx);
+                amrex::Real lval =
+                    quadraticspline_1d(periodic[0] ? 3 : shapetypex, rx);
                 amrex::Real weight = lval * mval * nval;
                 vals[0] += weight * nodaldata(i + l, j + m, k + n, comp0);
                 vals[1] += weight * nodaldata(i + l, j + m, k + n, comp1);
@@ -1029,6 +1034,7 @@ cubic_interp(amrex::Real xp[AMREX_SPACEDIM],
              const amrex::GpuArray<amrex::Real, AMREX_SPACEDIM> dx,
              amrex::Array4<amrex::Real> nodaldata,
              int comp,
+             const amrex::GpuArray<int, AMREX_SPACEDIM> &periodic,
              const int *lo,
              const int *hi)
 {
@@ -1058,7 +1064,7 @@ cubic_interp(amrex::Real xp[AMREX_SPACEDIM],
         amrex::Real cell_center = plo[0] + (i + l) * dx[0];
 
         amrex::Real rx = (xp[0] - cell_center) * inv_dx;
-        amrex::Real lval = cubicspline_1d(shapetypex, rx);
+        amrex::Real lval = cubicspline_1d(periodic[0] ? 3 : shapetypex, rx);
         value += lval * nodaldata(i + l, 0, 0, comp);
     }
 
@@ -1107,8 +1113,8 @@ cubic_interp(amrex::Real xp[AMREX_SPACEDIM],
             amrex::Real rx = (xp[0] - (cell_centerx)) * inv_dx;
             amrex::Real ry = (xp[1] - (cell_centery)) * inv_dy;
 
-            amrex::Real lval = cubicspline_1d(shapetypex, rx);
-            amrex::Real mval = cubicspline_1d(shapetypey, ry);
+            amrex::Real lval = cubicspline_1d(periodic[0] ? 3 : shapetypex, rx);
+            amrex::Real mval = cubicspline_1d(periodic[1] ? 3 : shapetypey, ry);
 
             value += lval * mval * nodaldata(i + l, j + m, 0, comp);
         }
@@ -1178,9 +1184,12 @@ cubic_interp(amrex::Real xp[AMREX_SPACEDIM],
                 amrex::Real ry = (xp[1] - (cell_centery)) * inv_dy;
                 amrex::Real rz = (xp[2] - (cell_centerz)) * inv_dz;
 
-                amrex::Real lval = cubicspline_1d(shapetypex, rx);
-                amrex::Real mval = cubicspline_1d(shapetypey, ry);
-                amrex::Real nval = cubicspline_1d(shapetypez, rz);
+                amrex::Real lval =
+                    cubicspline_1d(periodic[0] ? 3 : shapetypex, rx);
+                amrex::Real mval =
+                    cubicspline_1d(periodic[1] ? 3 : shapetypey, ry);
+                amrex::Real nval =
+                    cubicspline_1d(periodic[2] ? 3 : shapetypez, rz);
 
                 value +=
                     lval * mval * nval * nodaldata(i + l, j + m, k + n, comp);
@@ -1223,6 +1232,7 @@ cubic_interp_two(amrex::Real xp[AMREX_SPACEDIM],
                  amrex::Array4<amrex::Real> nodaldata,
                  int comp0,
                  int comp1,
+                 const amrex::GpuArray<int, AMREX_SPACEDIM> &periodic,
                  const int *lo,
                  const int *hi,
                  amrex::Real vals[2])
@@ -1247,7 +1257,7 @@ cubic_interp_two(amrex::Real xp[AMREX_SPACEDIM],
         else
             shapetypex = 3;
         amrex::Real rx = (xp[0] - (plo[0] + (i + l) * dx[0])) * inv_dx;
-        amrex::Real lval = cubicspline_1d(shapetypex, rx);
+        amrex::Real lval = cubicspline_1d(periodic[0] ? 3 : shapetypex, rx);
         vals[0] += lval * nodaldata(i + l, 0, 0, comp0);
         vals[1] += lval * nodaldata(i + l, 0, 0, comp1);
     }
@@ -1273,7 +1283,7 @@ cubic_interp_two(amrex::Real xp[AMREX_SPACEDIM],
         else
             shapetypey = 3;
         amrex::Real ry = (xp[1] - (plo[1] + (j + m) * dx[1])) * inv_dy;
-        amrex::Real mval = cubicspline_1d(shapetypey, ry);
+        amrex::Real mval = cubicspline_1d(periodic[1] ? 3 : shapetypey, ry);
         for (int l = lmin; l < lmax; ++l)
         {
             int shapetypex;
@@ -1286,7 +1296,7 @@ cubic_interp_two(amrex::Real xp[AMREX_SPACEDIM],
             else
                 shapetypex = 3;
             amrex::Real rx = (xp[0] - (plo[0] + (i + l) * dx[0])) * inv_dx;
-            amrex::Real lval = cubicspline_1d(shapetypex, rx);
+            amrex::Real lval = cubicspline_1d(periodic[0] ? 3 : shapetypex, rx);
             amrex::Real weight = lval * mval;
             vals[0] += weight * nodaldata(i + l, j + m, 0, comp0);
             vals[1] += weight * nodaldata(i + l, j + m, 0, comp1);
@@ -1318,7 +1328,7 @@ cubic_interp_two(amrex::Real xp[AMREX_SPACEDIM],
         else
             shapetypez = 3;
         amrex::Real rz = (xp[2] - (plo[2] + (k + n) * dx[2])) * inv_dz;
-        amrex::Real nval = cubicspline_1d(shapetypez, rz);
+        amrex::Real nval = cubicspline_1d(periodic[2] ? 3 : shapetypez, rz);
         for (int m = mmin; m < mmax; ++m)
         {
             int shapetypey;
@@ -1331,7 +1341,7 @@ cubic_interp_two(amrex::Real xp[AMREX_SPACEDIM],
             else
                 shapetypey = 3;
             amrex::Real ry = (xp[1] - (plo[1] + (j + m) * dx[1])) * inv_dy;
-            amrex::Real mval = cubicspline_1d(shapetypey, ry);
+            amrex::Real mval = cubicspline_1d(periodic[1] ? 3 : shapetypey, ry);
             for (int l = lmin; l < lmax; ++l)
             {
                 int shapetypex;
@@ -1344,7 +1354,8 @@ cubic_interp_two(amrex::Real xp[AMREX_SPACEDIM],
                 else
                     shapetypex = 3;
                 amrex::Real rx = (xp[0] - (plo[0] + (i + l) * dx[0])) * inv_dx;
-                amrex::Real lval = cubicspline_1d(shapetypex, rx);
+                amrex::Real lval =
+                    cubicspline_1d(periodic[0] ? 3 : shapetypex, rx);
                 amrex::Real weight = lval * mval * nval;
                 vals[0] += weight * nodaldata(i + l, j + m, k + n, comp0);
                 vals[1] += weight * nodaldata(i + l, j + m, k + n, comp1);
